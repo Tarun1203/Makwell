@@ -1,4 +1,4 @@
-// MAK WELL Website JavaScript
+// MAK WELL Website JavaScript - Blue Theme
 
 document.addEventListener('DOMContentLoaded', function() {
     
@@ -205,10 +205,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const currentScrollY = window.scrollY;
         
         if (currentScrollY > 100) {
-            navbar.style.background = 'rgba(19, 52, 59, 0.98)';
+            navbar.style.background = 'rgba(255, 255, 255, 0.98)';
             navbar.style.backdropFilter = 'blur(25px)';
         } else {
-            navbar.style.background = 'rgba(19, 52, 59, 0.95)';
+            navbar.style.background = 'rgba(255, 255, 255, 0.95)';
             navbar.style.backdropFilter = 'blur(20px)';
         }
 
@@ -316,7 +316,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.head.appendChild(style);
     }
 
-    // WhatsApp floating button (if needed)
+    // WhatsApp floating button (Blue Theme)
     function createWhatsAppButton() {
         const whatsappBtn = document.createElement('a');
         whatsappBtn.href = 'https://wa.me/919980000515';
@@ -325,7 +325,7 @@ document.addEventListener('DOMContentLoaded', function() {
         whatsappBtn.innerHTML = '<i class="fab fa-whatsapp"></i>';
         whatsappBtn.title = 'Chat on WhatsApp';
         
-        // Style the button
+        // Style the button with blue theme
         const style = document.createElement('style');
         style.textContent = `
             .whatsapp-float {
@@ -386,7 +386,7 @@ document.addEventListener('DOMContentLoaded', function() {
         createWhatsAppButton();
     }
 
-    // Back to top button
+    // Back to top button (Blue Theme)
     function createBackToTopButton() {
         const backToTopBtn = document.createElement('button');
         backToTopBtn.className = 'back-to-top';
@@ -401,7 +401,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 left: 20px;
                 width: 45px;
                 height: 45px;
-                background: rgba(33, 128, 141, 0.9);
+                background: rgba(37, 99, 235, 0.9);
                 border: none;
                 border-radius: 50%;
                 color: white;
@@ -420,7 +420,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             .back-to-top:hover {
-                background: rgba(33, 128, 141, 1);
+                background: rgba(29, 78, 216, 1);
                 transform: translateY(-2px);
             }
             
@@ -472,9 +472,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Hide loader when page is fully loaded
     window.addEventListener('load', hideLoader);
 
-    // Console log for developers
-    console.log('%c🚀 MAK WELL Website Loaded Successfully!', 'color: #21808d; font-size: 16px; font-weight: bold;');
-    console.log('%cWebsite developed for MAK WELL - MAKE IT HAPPEN', 'color: #32b8c6; font-size: 12px;');
+    // Console log for developers - Blue Theme
+    console.log('%c🚀 MAK WELL Website Loaded Successfully!', 'color: #2563eb; font-size: 16px; font-weight: bold;');
+    console.log('%cBlue Theme - Website developed for MAK WELL - MAKE IT HAPPEN', 'color: #3b82f6; font-size: 12px;');
 });
 
 // Utility functions
