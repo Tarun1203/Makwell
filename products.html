@@ -4,16 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MAK WELL - MAKE IT HAPPEN | Products</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style-blue.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .logo-img {
+            height: 40px;
+            width: auto;
+            margin-right: 10px;
+            border-radius: 4px;
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .product-image {
+            text-align: center;
+            margin-bottom: var(--spacing-lg);
+            position: relative;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8fafc;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .product-image img:hover {
+            transform: scale(1.05);
+        }
+        .product-image i {
+            font-size: 3rem;
+            color: var(--color-primary);
+            opacity: 0.6;
+            display: none;
+        }
+        .product-image.fallback i {
+            display: block;
+        }
+        .product-image.fallback img {
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <h2>MAK WELL</h2>
-                <span class="tagline">MAKE IT HAPPEN</span>
+                <img src="assets/images/logo.jpg" alt="MAK WELL Logo" class="logo-img" onerror="this.style.display='none'">
+                <div>
+                    <h2>MAK WELL</h2>
+                    <span class="tagline">MAKE IT HAPPEN</span>
+                </div>
             </div>
             <ul class="nav-menu">
                 <li><a href="index.html" class="nav-link">Home</a></li>
@@ -61,6 +110,7 @@
                     <!-- 24 inch Non-Smart TV -->
                     <div class="product-card">
                         <div class="product-image">
+                            <img src="assets/images/tv-24-non-smart.jpg" alt="24 inch Full HD LED TV" onerror="this.parentElement.classList.add('fallback')">
                             <i class="fas fa-tv"></i>
                             <div class="product-badge">HD Ready</div>
                         </div>
@@ -85,6 +135,7 @@
                     <!-- 24 inch Android TV -->
                     <div class="product-card">
                         <div class="product-image">
+                            <img src="assets/images/tv-24-android.jpg" alt="24 inch Android TV" onerror="this.parentElement.classList.add('fallback')">
                             <i class="fas fa-tv"></i>
                             <div class="product-badge">Android TV</div>
                         </div>
@@ -109,6 +160,7 @@
                     <!-- 32 inch Non-Smart TV -->
                     <div class="product-card">
                         <div class="product-image">
+                            <img src="assets/images/tv-32-non-smart.jpg" alt="32 inch HD LED TV" onerror="this.parentElement.classList.add('fallback')">
                             <i class="fas fa-tv"></i>
                             <div class="product-badge">HD Ready</div>
                         </div>
@@ -133,6 +185,7 @@
                     <!-- 32 inch Android TV -->
                     <div class="product-card">
                         <div class="product-image">
+                            <img src="assets/images/tv-32-android.jpg" alt="32 inch Android TV" onerror="this.parentElement.classList.add('fallback')">
                             <i class="fas fa-tv"></i>
                             <div class="product-badge">Smart TV</div>
                         </div>
@@ -157,6 +210,7 @@
                     <!-- 40 inch Android TV -->
                     <div class="product-card">
                         <div class="product-image">
+                            <img src="assets/images/tv-40-android.jpg" alt="40 inch Android TV" onerror="this.parentElement.classList.add('fallback')">
                             <i class="fas fa-tv"></i>
                             <div class="product-badge">Smart TV</div>
                         </div>
@@ -181,6 +235,7 @@
                     <!-- 43 inch Android TV -->
                     <div class="product-card">
                         <div class="product-image">
+                            <img src="assets/images/tv-43-android.jpg" alt="43 inch Full HD Android TV" onerror="this.parentElement.classList.add('fallback')">
                             <i class="fas fa-tv"></i>
                             <div class="product-badge">Full HD</div>
                         </div>
@@ -205,6 +260,7 @@
                     <!-- 50 inch 4K TV -->
                     <div class="product-card featured">
                         <div class="product-image">
+                            <img src="assets/images/tv-50-4k.jpg" alt="50 inch 4K UHD Android TV" onerror="this.parentElement.classList.add('fallback')">
                             <i class="fas fa-tv"></i>
                             <div class="product-badge premium">4K UHD</div>
                         </div>
@@ -229,6 +285,7 @@
                     <!-- 55 inch 4K TV -->
                     <div class="product-card featured">
                         <div class="product-image">
+                            <img src="assets/images/tv-55-4k.jpg" alt="55 inch 4K UHD Android TV" onerror="this.parentElement.classList.add('fallback')">
                             <i class="fas fa-tv"></i>
                             <div class="product-badge premium">4K UHD</div>
                         </div>
@@ -253,6 +310,7 @@
                     <!-- 65 inch 4K TV -->
                     <div class="product-card featured">
                         <div class="product-image">
+                            <img src="assets/images/tv-65-4k.jpg" alt="65 inch 4K UHD Android TV" onerror="this.parentElement.classList.add('fallback')">
                             <i class="fas fa-tv"></i>
                             <div class="product-badge premium">4K UHD</div>
                         </div>
@@ -283,6 +341,7 @@
                     <!-- 7 KG Washing Machine -->
                     <div class="product-card">
                         <div class="product-image">
+                            <img src="assets/images/washing-7kg.jpg" alt="7KG Semi Automatic Washing Machine" onerror="this.parentElement.classList.add('fallback')">
                             <i class="fas fa-tshirt"></i>
                             <div class="product-badge">7.0 KG</div>
                         </div>
@@ -307,6 +366,7 @@
                     <!-- 9 KG Washing Machine -->
                     <div class="product-card">
                         <div class="product-image">
+                            <img src="assets/images/washing-9kg.jpg" alt="9KG Semi Automatic Washing Machine" onerror="this.parentElement.classList.add('fallback')">
                             <i class="fas fa-tshirt"></i>
                             <div class="product-badge">9.0 KG</div>
                         </div>
@@ -331,6 +391,7 @@
                     <!-- 11 KG Washing Machine -->
                     <div class="product-card featured">
                         <div class="product-image">
+                            <img src="assets/images/washing-11kg.jpg" alt="11KG Semi Automatic Washing Machine" onerror="this.parentElement.classList.add('fallback')">
                             <i class="fas fa-tshirt"></i>
                             <div class="product-badge premium">11.0 KG</div>
                         </div>
@@ -365,6 +426,7 @@
                         <!-- 500VA LED Stabilizer -->
                         <div class="product-card">
                             <div class="product-image">
+                                <img src="assets/images/stabilizer-500va.jpg" alt="500VA LED Voltage Stabilizer" onerror="this.parentElement.classList.add('fallback')">
                                 <i class="fas fa-plug"></i>
                                 <div class="product-badge">500VA</div>
                             </div>
@@ -389,6 +451,7 @@
                         <!-- 500VA Smart Plus -->
                         <div class="product-card">
                             <div class="product-image">
+                                <img src="assets/images/stabilizer-smart-plus.jpg" alt="Smart Plus Voltage Stabilizer" onerror="this.parentElement.classList.add('fallback')">
                                 <i class="fas fa-plug"></i>
                                 <div class="product-badge">Smart Plus</div>
                             </div>
@@ -413,6 +476,7 @@
                         <!-- 750W Stabilizer -->
                         <div class="product-card">
                             <div class="product-image">
+                                <img src="assets/images/stabilizer-750w.jpg" alt="750W LED Voltage Stabilizer" onerror="this.parentElement.classList.add('fallback')">
                                 <i class="fas fa-plug"></i>
                                 <div class="product-badge">750W</div>
                             </div>
@@ -443,6 +507,7 @@
                         <!-- 750W Iron -->
                         <div class="product-card">
                             <div class="product-image">
+                                <img src="assets/images/iron-750w.jpg" alt="750W Automatic Electric Dry Iron" onerror="this.parentElement.classList.add('fallback')">
                                 <i class="fas fa-iron"></i>
                                 <div class="product-badge">750W</div>
                             </div>
@@ -467,6 +532,7 @@
                         <!-- 1000W Iron -->
                         <div class="product-card">
                             <div class="product-image">
+                                <img src="assets/images/iron-1000w.jpg" alt="1000W Electric Dry Iron" onerror="this.parentElement.classList.add('fallback')">
                                 <i class="fas fa-iron"></i>
                                 <div class="product-badge">1000W</div>
                             </div>
@@ -496,8 +562,13 @@
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-section">
-                <h3>MAK WELL</h3>
-                <p class="footer-tagline">MAKE IT HAPPEN</p>
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                    <img src="assets/images/logo.jpg" alt="MAK WELL Logo" class="logo-img" onerror="this.style.display='none'">
+                    <div>
+                        <h3>MAK WELL</h3>
+                        <p class="footer-tagline">MAKE IT HAPPEN</p>
+                    </div>
+                </div>
                 <p>Premium electronics for modern living. Quality products with reliable performance.</p>
             </div>
             <div class="footer-section">
@@ -531,6 +602,6 @@
         </div>
     </footer>
 
-    <script src="app.js"></script>
+    <script src="app-blue.js"></script>
 </body>
 </html>

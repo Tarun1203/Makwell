@@ -4,16 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MAK WELL - MAKE IT HAPPEN | New Arrivals</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style-blue.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .logo-img {
+            height: 40px;
+            width: auto;
+            margin-right: 10px;
+            border-radius: 4px;
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .product-image-large {
+            text-align: center;
+            position: relative;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8fafc;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .product-image-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .product-image-large img:hover {
+            transform: scale(1.05);
+        }
+        .product-image-large i {
+            font-size: 5rem;
+            color: var(--color-primary);
+            opacity: 0.6;
+            display: none;
+        }
+        .product-image-large.fallback i {
+            display: block;
+        }
+        .product-image-large.fallback img {
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <h2>MAK WELL</h2>
-                <span class="tagline">MAKE IT HAPPEN</span>
+                <img src="assets/images/logo.jpg" alt="MAK WELL Logo" class="logo-img" onerror="this.style.display='none'">
+                <div>
+                    <h2>MAK WELL</h2>
+                    <span class="tagline">MAKE IT HAPPEN</span>
+                </div>
             </div>
             <ul class="nav-menu">
                 <li><a href="index.html" class="nav-link">Home</a></li>
@@ -45,6 +93,7 @@
                     <!-- 65 inch 4K TV -->
                     <div class="featured-product">
                         <div class="product-image-large">
+                            <img src="assets/images/tv-65-4k.jpg" alt="65 inch 4K UHD Android TV" onerror="this.parentElement.classList.add('fallback')">
                             <i class="fas fa-tv"></i>
                             <div class="product-badge premium">NEW ARRIVAL</div>
                             <div class="product-tag">4K UHD</div>
@@ -78,6 +127,7 @@
                     <!-- 55 inch 4K TV -->
                     <div class="featured-product">
                         <div class="product-image-large">
+                            <img src="assets/images/tv-55-4k.jpg" alt="55 inch 4K UHD Android TV" onerror="this.parentElement.classList.add('fallback')">
                             <i class="fas fa-tv"></i>
                             <div class="product-badge premium">BEST SELLER</div>
                             <div class="product-tag">4K UHD</div>
@@ -111,6 +161,7 @@
                     <!-- 11 KG Washing Machine -->
                     <div class="featured-product">
                         <div class="product-image-large">
+                            <img src="assets/images/washing-11kg.jpg" alt="11 KG Semi Automatic Washing Machine" onerror="this.parentElement.classList.add('fallback')">
                             <i class="fas fa-tshirt"></i>
                             <div class="product-badge premium">LARGE FAMILY</div>
                             <div class="product-tag">11.0 KG</div>
@@ -272,8 +323,13 @@
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-section">
-                <h3>MAK WELL</h3>
-                <p class="footer-tagline">MAKE IT HAPPEN</p>
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                    <img src="assets/images/logo.jpg" alt="MAK WELL Logo" class="logo-img" onerror="this.style.display='none'">
+                    <div>
+                        <h3>MAK WELL</h3>
+                        <p class="footer-tagline">MAKE IT HAPPEN</p>
+                    </div>
+                </div>
                 <p>Premium electronics for modern living. Quality products with reliable performance.</p>
             </div>
             <div class="footer-section">
@@ -307,6 +363,6 @@
         </div>
     </footer>
 
-    <script src="app.js"></script>
+    <script src="app-blue.js"></script>
 </body>
 </html>

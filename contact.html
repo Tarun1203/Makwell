@@ -4,16 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MAK WELL - MAKE IT HAPPEN | Contact Us</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style-blue.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .logo-img {
+            height: 40px;
+            width: auto;
+            margin-right: 10px;
+            border-radius: 4px;
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <h2>MAK WELL</h2>
-                <span class="tagline">MAKE IT HAPPEN</span>
+                <img src="assets/images/logo.jpg" alt="MAK WELL Logo" class="logo-img" onerror="this.style.display='none'">
+                <div>
+                    <h2>MAK WELL</h2>
+                    <span class="tagline">MAKE IT HAPPEN</span>
+                </div>
             </div>
             <ul class="nav-menu">
                 <li><a href="index.html" class="nav-link">Home</a></li>
@@ -257,8 +273,13 @@
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-section">
-                <h3>MAK WELL</h3>
-                <p class="footer-tagline">MAKE IT HAPPEN</p>
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                    <img src="assets/images/logo.jpg" alt="MAK WELL Logo" class="logo-img" onerror="this.style.display='none'">
+                    <div>
+                        <h3>MAK WELL</h3>
+                        <p class="footer-tagline">MAKE IT HAPPEN</p>
+                    </div>
+                </div>
                 <p>Premium electronics for modern living. Quality products with reliable performance.</p>
             </div>
             <div class="footer-section">
@@ -292,6 +313,6 @@
         </div>
     </footer>
 
-    <script src="app.js"></script>
+    <script src="app-blue.js"></script>
 </body>
 </html>
