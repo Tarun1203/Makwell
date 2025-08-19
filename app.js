@@ -1,6 +1,9 @@
-// MAKWELL Website JavaScript - Fixed Navigation & Scroll Issues
+// MAKWELL Website JavaScript - COMPLETELY FIXED - No Color Changes on Scroll
 
 document.addEventListener('DOMContentLoaded', function() {
+    
+    // FIXED: Remove all scroll-based color changes
+    console.log('MAKWELL: Navigation color changes disabled - Royal Blue & Creamy theme locked');
     
     // Mobile Menu Toggle
     const hamburger = document.querySelector('.hamburger');
@@ -197,21 +200,109 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize smooth scrolling
     initSmoothScrolling();
 
-    // FIXED: Navbar scroll effect - Removed color changing on scroll
+    // COMPLETELY REMOVED NAVIGATION COLOR CHANGING
+    // NO scroll events that modify navbar colors
     const navbar = document.querySelector('.navbar');
     
-    // Remove the scroll event that was changing navigation colors
-    // Navigation will now maintain consistent royal blue on creamy background
+    // Force navigation colors and prevent any changes
+    function lockNavigationColors() {
+        if (navbar) {
+            // Force royal blue on creamy colors
+            navbar.style.setProperty('background', 'var(--color-nav-bg)', 'important');
+            navbar.style.setProperty('background-color', 'var(--color-nav-bg)', 'important');
+            
+            // Ensure all nav links stay royal blue
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.style.setProperty('color', 'var(--color-nav-text)', 'important');
+            });
+            
+            // Logo text stays royal blue
+            const logoText = document.querySelectorAll('.nav-logo h2, .nav-logo-text h2');
+            logoText.forEach(text => {
+                text.style.setProperty('color', 'var(--color-nav-text)', 'important');
+            });
+            
+            console.log('MAKWELL: Navigation colors locked - Royal Blue on Creamy background');
+        }
+    }
+
+    // Lock colors immediately and on any potential changes
+    lockNavigationColors();
     
-    // Optional: Add subtle shadow on scroll without changing colors
-    window.addEventListener('scroll', () => {
+    // Optional: Only subtle shadow change on scroll (no color changes)
+    let lastScrollY = 0;
+    window.addEventListener('scroll', throttle(() => {
         const currentScrollY = window.scrollY;
         
-        if (currentScrollY > 50) {
-            navbar.style.boxShadow = '0 4px 20px rgba(65, 105, 225, 0.15)';
-        } else {
-            navbar.style.boxShadow = '0 4px 20px rgba(65, 105, 225, 0.1)';
+        if (navbar) {
+            // Only change shadow, never colors
+            if (currentScrollY > 50) {
+                navbar.style.setProperty('box-shadow', '0 4px 20px rgba(65, 105, 225, 0.2)', 'important');
+            } else {
+                navbar.style.setProperty('box-shadow', '0 4px 20px rgba(65, 105, 225, 0.1)', 'important');
+            }
+            
+            // Re-lock colors on every scroll to prevent any changes
+            lockNavigationColors();
         }
+        
+        lastScrollY = currentScrollY;
+    }, 16)); // 60fps throttle
+
+    // Ensure CSS is loaded and styles are applied
+    function ensureCSS() {
+        // Check if our custom CSS variables are available
+        const testElement = document.createElement('div');
+        testElement.style.color = 'var(--color-royal-blue)';
+        document.body.appendChild(testElement);
+        
+        const computedColor = window.getComputedStyle(testElement).color;
+        if (computedColor === '' || computedColor === 'var(--color-royal-blue)') {
+            console.warn('MAKWELL: CSS variables not loaded properly, applying fallback styles');
+            
+            // Apply fallback styles
+            const fallbackStyles = `
+                <style id="makwell-fallback-styles">
+                    .navbar {
+                        background: rgba(255, 253, 240, 1) !important;
+                        background-color: rgba(255, 253, 240, 1) !important;
+                    }
+                    .nav-link, .nav-logo h2, .nav-logo-text h2 {
+                        color: rgba(65, 105, 225, 1) !important;
+                    }
+                    .tagline {
+                        color: rgba(72, 61, 139, 1) !important;
+                    }
+                    .section-title, .about-card h3, .contact-card h3, .product-info h4 {
+                        color: rgba(65, 105, 225, 1) !important;
+                    }
+                    .section-subtitle, .about-card p, .contact-card p, .product-features li {
+                        color: rgba(72, 61, 139, 1) !important;
+                    }
+                </style>
+            `;
+            
+            if (!document.getElementById('makwell-fallback-styles')) {
+                document.head.insertAdjacentHTML('beforeend', fallbackStyles);
+            }
+        } else {
+            console.log('MAKWELL: CSS loaded successfully');
+        }
+        
+        document.body.removeChild(testElement);
+    }
+
+    // Check CSS loading after a short delay
+    setTimeout(ensureCSS, 100);
+    
+    // Re-check CSS and lock colors after page is fully loaded
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            ensureCSS();
+            lockNavigationColors();
+            console.log('MAKWELL: Page fully loaded, styles locked');
+        }, 200);
     });
 
     // Intersection Observer for animations
@@ -459,7 +550,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Console log for developers
     console.log('%c🚀 MAKWELL Website Loaded Successfully!', 'color: #4169E1; font-size: 16px; font-weight: bold;');
-    console.log('%cRoyal Blue & Creamy Theme - Navigation fixed!', 'color: #4169E1; font-size: 12px;');
+    console.log('%cRoyal Blue & Creamy Theme - Navigation FIXED - No color changes on scroll!', 'color: #4169E1; font-size: 12px;');
 });
 
 // Utility functions
@@ -492,4 +583,76 @@ function throttle(func, limit) {
 window.makwellUtils = {
     debounce,
     throttle
+};
+
+// Emergency CSS fix function - call if styles are missing
+window.emergencyFixCSS = function() {
+    console.log('MAKWELL: Applying emergency CSS fixes...');
+    
+    const emergencyCSS = `
+        <style id="makwell-emergency-fix">
+            /* EMERGENCY NAVIGATION FIX */
+            .navbar {
+                background: rgba(255, 253, 240, 1) !important;
+                background-color: rgba(255, 253, 240, 1) !important;
+            }
+            .nav-link, .nav-logo h2, .nav-logo-text h2 {
+                color: rgba(65, 105, 225, 1) !important;
+            }
+            .tagline {
+                color: rgba(72, 61, 139, 1) !important;
+            }
+            
+            /* EMERGENCY PAGE CONTENT FIX */
+            .section-title {
+                color: rgba(65, 105, 225, 1) !important;
+                font-size: 2.5rem !important;
+                font-weight: 700 !important;
+                margin-bottom: 1rem !important;
+            }
+            .section-subtitle {
+                color: rgba(72, 61, 139, 1) !important;
+                font-size: 1.1rem !important;
+            }
+            .about-card, .contact-card, .product-card, .feature-card {
+                background: white !important;
+                border: 2px solid rgba(65, 105, 225, 0.2) !important;
+                border-radius: 1rem !important;
+                padding: 1.5rem !important;
+                margin-bottom: 1rem !important;
+                box-shadow: 0 4px 6px rgba(65, 105, 225, 0.1) !important;
+            }
+            .about-card h3, .contact-card h3, .product-info h4, .feature-card h3 {
+                color: rgba(65, 105, 225, 1) !important;
+                font-size: 1.3rem !important;
+                font-weight: 600 !important;
+                margin-bottom: 0.5rem !important;
+            }
+            .about-card p, .contact-card p, .product-features li, .feature-card p {
+                color: rgba(72, 61, 139, 1) !important;
+                line-height: 1.6 !important;
+            }
+            
+            /* EMERGENCY LAYOUT FIX */
+            .container {
+                max-width: 1200px !important;
+                margin: 0 auto !important;
+                padding: 0 1rem !important;
+            }
+            .about-section, .contact-section, .products-section {
+                padding: 100px 0 4rem !important;
+                background: white !important;
+            }
+            .about-text, .contact-content {
+                display: grid !important;
+                gap: 2rem !important;
+            }
+        </style>
+    `;
+    
+    if (!document.getElementById('makwell-emergency-fix')) {
+        document.head.insertAdjacentHTML('beforeend', emergencyCSS);
+    }
+    
+    console.log('MAKWELL: Emergency CSS fixes applied!');
 };
