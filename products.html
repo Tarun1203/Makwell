@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MakWell — Products</title>
+  <title>MakWell Products</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Header with MakWell logo on the left -->
+  <!-- Header -->
   <header class="header">
     <div class="container header-inner">
       <div class="brand">
@@ -16,7 +16,7 @@
       </div>
       <nav class="nav">
         <a href="index.html">Home</a>
-        <a href="products.html">Products</a>
+        <a href="products.html" class="active">Products</a>
         <a href="new-arrivals.html">New Arrivals</a>
         <a href="about.html">About</a>
         <a href="contact.html">Contact</a>
@@ -26,98 +26,56 @@
 
   <main class="section">
     <div class="container">
-      <h1 style="margin:0 0 .6rem;color:var(--brand)">Products</h1>
-      <p class="small">Specs summarized from MakWell brochure/catalog. Download full PDFs on each card.</p>
+      <h1 style="color:var(--brand)">Our Products</h1>
+      <p class="small">Explore the complete range of MakWell appliances designed with innovation and durability.</p>
 
-      <div class="grid grid-3" style="margin-top:12px">
-        <!-- TVs from brochure -->
-        <article class="card product-card">
-          <img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1400&auto=format&fit=crop" alt="MW-55Q1" />
-          <div class="meta">
-            <h3>MakWell 55″ QLED 4K (MW-55Q1)</h3>
-            <div class="kvs">QLED • 4K • 120Hz • Google TV</div>
-            <div class="small">HDMI 2.1 ×4 • Wi-Fi 6 • ~600 nits</div>
-            <div style="margin-top:8px;display:flex;gap:.5rem;flex-wrap:wrap">
-              <a class="btn primary" href="contact.html">Enquire</a>
-              <a class="btn ghost" href="assets/specs/Makwell-Brochure.pdf" target="_blank">Spec Sheet (PDF)</a>
-            </div>
-          </div>
-        </article>
+      <!-- Product Cards -->
+      <div class="grid grid-3" style="margin-top:24px">
+        
+        <!-- Product 1 -->
+        <div class="card product">
+          <img src="assets/images/washing-machine.jpg" alt="MakWell Washing Machine" />
+          <h2>Washing Machine</h2>
+          <p>Efficient front-load washing with smart wash cycles.</p>
+          <ul>
+            <li>Capacity: 7kg</li>
+            <li>Smart inverter motor</li>
+            <li>Energy star rated</li>
+          </ul>
+          <a class="btn" href="assets/specs/Makwell-Washing-Machine.pdf" target="_blank">View Specs (PDF)</a>
+        </div>
 
-        <article class="card product-card">
-          <img src="https://images.unsplash.com/photo-1527443154391-507e9dc6c5cc?q=80&w=1400&auto=format&fit=crop" alt="MW-65U3" />
-          <div class="meta">
-            <h3>MakWell 65″ 4K UHD (MW-65U3)</h3>
-            <div class="kvs">4K • 60Hz • Google TV</div>
-            <div class="small">Slim bezel • HDMI 2.1 ×3 • ~400 nits</div>
-            <div style="margin-top:8px;display:flex;gap:.5rem;flex-wrap:wrap">
-              <a class="btn primary" href="contact.html">Enquire</a>
-              <a class="btn ghost" href="assets/specs/Makwell-Brochure.pdf" target="_blank">Spec Sheet (PDF)</a>
-            </div>
-          </div>
-        </article>
+        <!-- Product 2 -->
+        <div class="card product">
+          <img src="assets/images/refrigerator.jpg" alt="MakWell Refrigerator" />
+          <h2>Refrigerator</h2>
+          <p>Double-door refrigerator with frost-free technology.</p>
+          <ul>
+            <li>Capacity: 310L</li>
+            <li>Inverter compressor</li>
+            <li>Multi-air flow cooling</li>
+          </ul>
+          <a class="btn" href="assets/specs/Makwell-Refrigerator.pdf" target="_blank">View Specs (PDF)</a>
+        </div>
 
-        <article class="card product-card">
-          <img src="https://images.unsplash.com/photo-1484704849700-f032a568e944?q=80&w=1400&auto=format&fit=crop" alt="MW-85QX" />
-          <div class="meta">
-            <h3>MakWell 85″ QLED 120Hz (MW-85QX)</h3>
-            <div class="kvs">QLED • 4K • 120Hz • Google TV</div>
-            <div class="small">HDMI 2.1 ×4 • Wi-Fi 6 • Premium bezel</div>
-            <div style="margin-top:8px;display:flex;gap:.5rem;flex-wrap:wrap">
-              <a class="btn primary" href="contact.html">Enquire</a>
-              <a class="btn ghost" href="assets/specs/Makwell-Brochure.pdf" target="_blank">Spec Sheet (PDF)</a>
-            </div>
-          </div>
-        </article>
+        <!-- Product 3 -->
+        <div class="card product">
+          <img src="assets/images/microwave.jpg" alt="MakWell Microwave" />
+          <h2>Microwave Oven</h2>
+          <p>Compact microwave oven with grill and convection modes.</p>
+          <ul>
+            <li>Capacity: 28L</li>
+            <li>Touch panel controls</li>
+            <li>10 auto cook menus</li>
+          </ul>
+          <a class="btn" href="assets/specs/Makwell-Microwave.pdf" target="_blank">View Specs (PDF)</a>
+        </div>
 
-        <!-- Washing Machines from catalogue -->
-        <article class="card product-card">
-          <img src="https://images.unsplash.com/photo-1517059224940-d4af9eec41e5?q=80&w=1400&auto=format&fit=crop" alt="SAWM-7.0" />
-          <div class="meta">
-            <h3>Semi Automatic WM — 7.0 KG (SAWM-7.0)</h3>
-            <div class="kvs">Toughened Glass • Diamond Steel Drum</div>
-            <div class="small">135 W Motor • Lint Filter • ABS Body</div>
-            <div style="margin-top:8px;display:flex;gap:.5rem;flex-wrap:wrap">
-              <a class="btn primary" href="contact.html">Enquire</a>
-              <a class="btn ghost" href="assets/specs/Makwell-Washing-Machine.pdf" target="_blank">WM Catalogue (PDF)</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="card product-card">
-          <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1400&auto=format&fit=crop" alt="SAWM-9.0" />
-          <div class="meta">
-            <h3>Semi Automatic WM — 9.0 KG (SAWM-9.0)</h3>
-            <div class="kvs">Toughened Glass • Diamond Steel Drum</div>
-            <div class="small">180 W Motor • Double Magic Filter • ABS Body</div>
-            <div style="margin-top:8px;display:flex;gap:.5rem;flex-wrap:wrap">
-              <a class="btn primary" href="contact.html">Enquire</a>
-              <a class="btn ghost" href="assets/specs/Makwell-Washing-Machine.pdf" target="_blank">WM Catalogue (PDF)</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="card product-card">
-          <img src="https://images.unsplash.com/photo-1496171367470-9ed9a91ea931?q=80&w=1400&auto=format&fit=crop" alt="SAWM-11.0" />
-          <div class="meta">
-            <h3>Semi Automatic WM — 11.0 KG (SAWM-11.0)</h3>
-            <div class="kvs">Toughened Glass • Diamond Steel Drum</div>
-            <div class="small">200 W Motor • Double Magic Filter • ABS Body</div>
-            <div style="margin-top:8px;display:flex;gap:.5rem;flex-wrap:wrap">
-              <a class="btn primary" href="contact.html">Enquire</a>
-              <a class="btn ghost" href="assets/specs/Makwell-Washing-Machine.pdf" target="_blank">WM Catalogue (PDF)</a>
-            </div>
-          </div>
-        </article>
-      </div>
-
-      <div class="banner" style="margin-top:14px">
-        <strong>All details available in the brochure.</strong>
-        <a class="btn ghost" href="assets/specs/Makwell-Brochure.pdf" target="_blank" style="margin-left:.6rem">Download Brochure (PDF)</a>
       </div>
     </div>
   </main>
 
+  <!-- Footer -->
   <footer class="footer">
     <div class="container inner">
       <div class="brand"><img src="assets/images/logo.jpg" alt="MakWell" /></div>
