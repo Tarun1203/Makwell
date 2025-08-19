@@ -1,4 +1,4 @@
-// MAK WELL Website JavaScript - Clean Theme
+// MAKWELL Website JavaScript - Fixed Navigation & Scroll Issues
 
 document.addEventListener('DOMContentLoaded', function() {
     
@@ -197,22 +197,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize smooth scrolling
     initSmoothScrolling();
 
-    // Navbar scroll effect
+    // FIXED: Navbar scroll effect - Removed color changing on scroll
     const navbar = document.querySelector('.navbar');
-    let lastScrollY = window.scrollY;
-
+    
+    // Remove the scroll event that was changing navigation colors
+    // Navigation will now maintain consistent royal blue on creamy background
+    
+    // Optional: Add subtle shadow on scroll without changing colors
     window.addEventListener('scroll', () => {
         const currentScrollY = window.scrollY;
         
-        if (currentScrollY > 100) {
-            navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-            navbar.style.backdropFilter = 'blur(25px)';
+        if (currentScrollY > 50) {
+            navbar.style.boxShadow = '0 4px 20px rgba(65, 105, 225, 0.15)';
         } else {
-            navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-            navbar.style.backdropFilter = 'blur(20px)';
+            navbar.style.boxShadow = '0 4px 20px rgba(65, 105, 225, 0.1)';
         }
-
-        lastScrollY = currentScrollY;
     });
 
     // Intersection Observer for animations
@@ -316,7 +315,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.head.appendChild(style);
     }
 
-    // WhatsApp floating button (Clean Theme)
+    // WhatsApp floating button
     function createWhatsAppButton() {
         const whatsappBtn = document.createElement('a');
         whatsappBtn.href = 'https://wa.me/919980000515';
@@ -325,7 +324,7 @@ document.addEventListener('DOMContentLoaded', function() {
         whatsappBtn.innerHTML = '<i class="fab fa-whatsapp"></i>';
         whatsappBtn.title = 'Chat on WhatsApp';
         
-        // Style the button with clean theme
+        // Style the button
         const style = document.createElement('style');
         style.textContent = `
             .whatsapp-float {
@@ -386,7 +385,7 @@ document.addEventListener('DOMContentLoaded', function() {
         createWhatsAppButton();
     }
 
-    // Back to top button (Clean Theme)
+    // Back to top button
     function createBackToTopButton() {
         const backToTopBtn = document.createElement('button');
         backToTopBtn.className = 'back-to-top';
@@ -401,7 +400,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 left: 20px;
                 width: 45px;
                 height: 45px;
-                background: rgba(37, 99, 235, 0.9);
+                background: rgba(65, 105, 225, 0.9);
                 border: none;
                 border-radius: 50%;
                 color: white;
@@ -420,7 +419,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             .back-to-top:hover {
-                background: rgba(29, 78, 216, 1);
+                background: rgba(72, 61, 139, 1);
                 transform: translateY(-2px);
             }
             
@@ -458,23 +457,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     createBackToTopButton();
 
-    // Loading animation (optional)
-    function hideLoader() {
-        const loader = document.querySelector('.page-loader');
-        if (loader) {
-            loader.style.opacity = '0';
-            setTimeout(() => {
-                loader.style.display = 'none';
-            }, 300);
-        }
-    }
-
-    // Hide loader when page is fully loaded
-    window.addEventListener('load', hideLoader);
-
-    // Console log for developers - Clean Theme
-    console.log('%c🚀 MAK WELL Website Loaded Successfully!', 'color: #2563eb; font-size: 16px; font-weight: bold;');
-    console.log('%cClean Theme - Website developed for MAK WELL - MAKE IT HAPPEN', 'color: #374151; font-size: 12px;');
+    // Console log for developers
+    console.log('%c🚀 MAKWELL Website Loaded Successfully!', 'color: #4169E1; font-size: 16px; font-weight: bold;');
+    console.log('%cRoyal Blue & Creamy Theme - Navigation fixed!', 'color: #4169E1; font-size: 12px;');
 });
 
 // Utility functions
