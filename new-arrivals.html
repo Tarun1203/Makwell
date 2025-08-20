@@ -1,45 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MAKWELL | New Arrivals</title>
-  <link rel="stylesheet" href="assets/css/style-1.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAKWELL - MAKE IT HAPPEN | New Arrivals</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-  <!-- Navigation (same as above) -->
-  <section class="new-arrivals-section">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">New Arrivals</h2>
-        <p class="section-subtitle">Latest launches and coming soon!</p>
-      </div>
-      <div class="products-grid">
-        <div class="product-card">
-          <div class="product-image">
-            <img src="assets/images/tv-65-4k-new.jpg" alt="65 inch 4K TV">
-            <i class="fas fa-tv"></i>
-            <div class="product-badge">New</div>
-          </div>
-          <div class="product-info">
-            <h4>65" 4K UHD Android TV</h4>
-            <p class="product-size">2025 Model</p>
-            <p class="product-type">Smart Android TV</p>
-            <div class="product-specs">
-              <span class="spec-item">4K UHD</span>
-              <span class="spec-item">120Hz</span>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="assets/images/logo.jpg" alt="MAKWELL Logo" class="logo-img" 
+                     onerror="this.style.display='none'; document.querySelector('.nav-logo-text').classList.add('visible');">
+                <div class="nav-logo-text">
+                    <h2>MAKWELL</h2>
+                    <span class="tagline">MAKE IT HAPPEN</span>
+                </div>
             </div>
-            <ul class="product-features">
-              <li>Dolby Atmos, Voice Control, Gaming mode</li>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="products.html" class="nav-link">Products</a></li>
+                <li><a href="about.html" class="nav-link">About Us</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+                <li><a href="new-arrivals.html" class="nav-link">New Arrivals</a></li>
             </ul>
-          </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
-        <!-- More products... -->
-      </div>
-    </div>
-  </section>
-  <!-- Footer (same as above) -->
-  <script src="assets/js/app.js"></script>
+    </nav>
+
+    <!-- New Arrivals Section -->
+    <section id="new-arrivals" class="new-arrivals-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">New Arrivals</h2>
+                <p class="section-subtitle">Discover our latest premium electronics featuring cutting-edge technology and innovative design</p>
+            </div>
+
+            <!-- Featured Products -->
+            <div class="featured-section">
+                <h3 class="featured-title">Featured Premium Products</h3>
+                <div class="featured-grid">
+                    <!-- 65 inch 4K TV -->
+                    <div class="featured-product">
+                        <div class="product-image-large">
+                            <img src="assets/images/tv-65-4k.jpg" alt="65 inch 4K UHD Android TV" onerror="this.parentElement.classList.add('fallback')">
+                            <i class="fas fa-tv"></i>
+                            <div class="product-badge premium">NEW ARRIVAL</div>
+                            <div class="product-tag">4K UHD</div>
+                        </div>
+                        <div class="product-details">
+                            <h3>65" 4K UHD Android TV</h3>
+                            <p class="product-subtitle">The Ultimate Entertainment Experience</p>
+                            <p class="product-description">Immerse yourself in stunning 4K Ultra HD resolution with our largest screen offering. Featuring Android TV, voice command, and all your favorite streaming apps.</p>
+                            
+                            <div class="key-features">
+                                <h4>Key Features:</h4>
+                                <ul>
+                                    <li><i class="fas fa-check"></i> 65 inch (165cm) Ultra Large Screen</li>
+                                    <li><i class="fas fa-check"></i> 4K UHD Resolution (3840 x 2160)</li>
+                                    <li><i class="fas fa-check"></i> 16.7 Million Colors</li>
+                                    <li><i class="fas fa-check"></i> Android TV with Voice Command</li>
+                                    <li><i class="fas fa-check"></i> Netflix, Prime Video, Disney+, YouTube</li>
+                                    <li><i class="fas fa-check"></i> Dolby Audio</li>
+                                    <li><i class="fas fa-check"></i> Zero Dot Panel Technology</li>
+                                    <li><i class="fas fa-check"></i> Screen Share & App Store</li>
+                                </ul>
+                            </div>
+
+                            <div class="product-actions">
+                                <a href="contact.html" class="btn btn--primary">Get Quote</a>
+                                <a href="products.html" class="btn btn--outline">View All TVs</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 55 inch 4K TV -->
+                    <div class="featured-product">
+                        <div class="product-image-large">
+                            <img src="assets/images/tv-55-4k.jpg" alt="55 inch 4K UHD Android TV" onerror="this.parentElement.classList.add('fallback')">
+                            <i class="fas fa-tv"></i>
+                            <div class="product-badge premium">BEST SELLER</div>
+                            <div class="product-tag">4K UHD</div>
+                        </div>
+                        <div class="product-details">
+                            <h3>55" 4K UHD Android TV</h3>
+                            <p class="product-subtitle">Perfect Balance of Size and Performance</p>
+                            <p class="product-description">Our most popular 4K TV offering the perfect balance of screen size and advanced features. Ideal for medium to large living rooms.</p>
+                            
+                            <div class="key-features">
+                                <h4>Key Features:</h4>
+                                <ul>
+                                    <li><i class="fas fa-check"></i> 55 inch (139cm) Large Screen</li>
+                                    <li><i class="fas fa-check"></i> 4K UHD Resolution</li>
+                                    <li><i class="fas fa-check"></i> Voice Command Support</li>
+                                    <li><i class="fas fa-check"></i> Low Power Consumption</li>
+                                    <li><i class="fas fa-check"></i> All Streaming Apps Pre-installed</li>
+                                    <li><i class="fas fa-check"></i> WiFi + LAN Connectivity</li>
+                                    <li><i class="fas fa-check"></i> Multiple HDMI & USB Ports</li>
+                                    <li><i class="fas fa-check"></i> Premium Build Quality</li>
+                                </ul>
+                            </div>
+
+                            <div class="product-actions">
+                                <a href="contact.html" class="btn btn--primary">Get Quote</a>
+                                <a href="products.html" class="btn btn--outline">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 11 KG Washing Machine -->
+                    <div class="featured-product">
+                        <div class="product-image-large">
+                            <img src="assets/images/washing-11kg.jpg" alt="11 KG Semi Automatic Washing Machine" onerror="this.parentElement.classList.add('fallback')">
+                            <i class="fas fa-tshirt"></i>
+                            <div class="product-badge premium">LARGE FAMILY</div>
+                            <div class="product-tag">11.0 KG</div>
+                        </div>
+                        <div class="product-details">
+                            <h3>SAWM - 11.0 KG Semi Automatic</h3>
+                            <p class="product-subtitle">Maximum Capacity for Large Families</p>
+                            <p class="product-description">Our largest capacity washing machine designed for big families. Features the most powerful 200W motor and advanced double magic filtration system.</p>
+                            
+                            <div class="key-features">
+                                <h4>Key Features:</h4>
+                                <ul>
+                                    <li><i class="fas fa-check"></i> 11.0 KG Large Capacity</li>
+                                    <li><i class="fas fa-check"></i> Powerful 200W Motor</li>
+                                    <li><i class="fas fa-check"></i> Toughened Glass Top</li>
+                                    <li><i class="fas fa-check"></i> ABS Body Construction</li>
+                                    <li><i class="fas fa-check"></i> Diamond Steel Drum</li>
+                                    <li><i class="fas fa-check"></i> Double Magic Filter</li>
+                                    <li><i class="fas fa-check"></i> Heavy Wash Pulsator</li>
+                                    <li><i class="fas fa-check"></i> 2 Program Selector</li>
+                                </ul>
+                            </div>
+
+                            <div class="product-actions">
+                                <a href="contact.html" class="btn btn--primary">Get Quote</a>
+                                <a href="products.html" class="btn btn--outline">View All Machines</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Call to Action -->
+            <div class="cta-section">
+                <div class="cta-content">
+                    <h3>Ready to Upgrade Your Home?</h3>
+                    <p>Discover the perfect electronics for your home. From entertainment to convenience, MAKWELL has everything you need.</p>
+                    <div class="cta-buttons">
+                        <a href="products.html" class="btn btn--primary cta-btn">Browse All Products</a>
+                        <a href="contact.html" class="btn btn--outline cta-btn">Contact for Quote</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                    <img src="assets/images/logo.jpg" alt="MAKWELL Logo" class="logo-img" onerror="this.style.display='none'">
+                    <div>
+                        <h3>MAKWELL</h3>
+                        <p class="footer-tagline">MAKE IT HAPPEN</p>
+                    </div>
+                </div>
+                <p>Premium electronics for modern living. Quality products with reliable performance.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="new-arrivals.html">New Arrivals</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Info</h4>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>makwellindia456@gmail.com</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>+91 99800 00515</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Hubli, Karnataka, India</span>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 MAKWELL - PUSHPAK ENTERPRISES. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
 </body>
 </html>
