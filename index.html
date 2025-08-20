@@ -1,265 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAKWELL - MAKE IT HAPPEN | Premium Electronics</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAKWELL - MAKE IT HAPPEN | Premium Electronics</title>
+  <link rel="stylesheet" href="assets/css/style-1.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <img src="assets/images/logo.jpg" alt="MAKWELL Logo" class="logo-img" 
-                     onerror="this.style.display='none'; document.querySelector('.nav-logo-text').classList.add('visible');">
-                <div class="nav-logo-text">
-                    <h2>MAKWELL</h2>
-                    <span class="tagline">MAKE IT HAPPEN</span>
-                </div>
-            </div>
-            <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link">Home</a></li>
-                <li><a href="products.html" class="nav-link">Products</a></li>
-                <li><a href="about.html" class="nav-link">About Us</a></li>
-                <li><a href="contact.html" class="nav-link">Contact</a></li>
-                <li><a href="new-arrivals.html" class="nav-link">New Arrivals</a></li>
-            </ul>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <img src="assets/images/logo.jpg" alt="MAKWELL Logo" class="logo-img" onerror="this.style.display='none';">
+        <div class="nav-logo-text">
+          <h2>MAKWELL</h2>
+          <span class="tagline">MAKE IT HAPPEN</span>
         </div>
-    </nav>
+      </div>
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="products.html" class="nav-link">Products</a></li>
+        <li><a href="about.html" class="nav-link">About Us</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+        <li><a href="new-arrivals.html" class="nav-link">New Arrivals</a></li>
+      </ul>
+      <div class="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
 
-    <!-- Home Section -->
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <div class="hero-text">
-                <h1>MAKWELL</h1>
-                <h2 class="hero-tagline">MAKE IT HAPPEN</h2>
-                <p class="hero-description">Discover premium electronics that transform your everyday life. From cutting-edge 4K TVs to efficient washing machines and reliable voltage stabilizers.</p>
-                <div class="hero-buttons">
-                    <a href="products.html" class="btn btn--primary hero-btn">Explore Products</a>
-                    <a href="contact.html" class="btn btn--outline hero-btn">Contact Us</a>
-                </div>
-            </div>
-            <div class="hero-categories">
-                <!-- Smart TVs Card with Photo -->
-                <div class="category-card">
-                    <div class="category-card-image">
-                        <img src="assets/images/category-tvs.jpg" alt="Smart TVs Collection" onerror="this.parentElement.classList.add('fallback')">
-                        <i class="fas fa-tv"></i>
-                    </div>
-                    <h3>Smart TVs & LED TVs</h3>
-                    <p>4K UHD, Full HD, and HD Ready TVs with Android TV and Smart features</p>
-                    <span class="category-count">9 Models Available</span>
-                </div>
+  <!-- Hero Section -->
+  <section style="padding:140px 0 40px 0;text-align:center;">
+    <div class="container">
+      <h1>Discover Premium Electronics for Modern Living</h1>
+      <p>From cutting-edge 4K TVs and efficient washing machines to reliable voltage stabilizers, MAKWELL brings you quality you can trust.</p>
+    </div>
+  </section>
 
-                <!-- Washing Machines Card with Photo -->
-                <div class="category-card">
-                    <div class="category-card-image">
-                        <img src="assets/images/category-washing.jpg" alt="Washing Machines Collection" onerror="this.parentElement.classList.add('fallback')">
-                        <i class="fas fa-tshirt"></i>
-                    </div>
-                    <h3>Washing Machines</h3>
-                    <p>Semi-automatic washing machines with powerful motors and advanced features</p>
-                    <span class="category-count">3 Models Available</span>
-                </div>
-
-                <!-- Electronics Card with Photo -->
-                <div class="category-card">
-                    <div class="category-card-image">
-                        <img src="assets/images/category-electronics.jpg" alt="Electronics Collection" onerror="this.parentElement.classList.add('fallback')">
-                        <i class="fas fa-plug"></i>
-                    </div>
-                    <h3>Electronics</h3>
-                    <p>Voltage stabilizers and electric dry irons for reliable performance</p>
-                    <span class="category-count">5 Models Available</span>
-                </div>
-            </div>
+  <!-- Category Highlights -->
+  <section class="features">
+    <div class="container">
+      <div class="features-grid">
+        <div class="feature-card">
+          <i class="fas fa-tv feature-icon"></i>
+          <h3>Smart & Android TVs</h3>
+          <p>4K UHD, Full HD, and HD Ready TVs with Android TV and Smart features<br><strong>9 Models Available</strong></p>
         </div>
-    </section>
-
-    <!-- Hero Banner Section with Large Product Images -->
-    <section class="hero-banner">
-        <div class="container">
-            <div class="banner-grid">
-                <!-- Featured TV Banner -->
-                <div class="banner-card featured-tv">
-                    <div class="banner-image">
-                        <img src="assets/images/banner-4k-tv.jpg" alt="65 inch 4K UHD Smart TV" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="banner-fallback" style="display: none;">
-                            <i class="fas fa-tv"></i>
-                            <span>4K UHD TV</span>
-                        </div>
-                    </div>
-                    <div class="banner-content">
-                        <h3>4K UHD Smart TVs</h3>
-                        <p>Experience cinema-quality entertainment at home with our premium 4K televisions</p>
-                        <a href="products.html" class="btn btn--primary">View TVs</a>
-                    </div>
-                </div>
-
-                <!-- Featured Washing Machine Banner -->
-                <div class="banner-card featured-washing">
-                    <div class="banner-image">
-                        <img src="assets/images/banner-washing-machine.jpg" alt="Large Capacity Washing Machine" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="banner-fallback" style="display: none;">
-                            <i class="fas fa-tshirt"></i>
-                            <span>Washing Machine</span>
-                        </div>
-                    </div>
-                    <div class="banner-content">
-                        <h3>Powerful Washing Machines</h3>
-                        <p>Advanced semi-automatic washing machines for efficient and thorough cleaning</p>
-                        <a href="products.html" class="btn btn--primary">View Machines</a>
-                    </div>
-                </div>
-            </div>
+        <div class="feature-card">
+          <i class="fas fa-tshirt feature-icon"></i>
+          <h3>Washing Machines</h3>
+          <p>Semi-automatic machines with powerful motors and advanced features<br><strong>3 Models Available</strong></p>
         </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="features">
-        <div class="container">
-            <h2 class="section-title">Why Choose MAKWELL?</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <i class="fas fa-award feature-icon"></i>
-                    <h3>Premium Quality</h3>
-                    <p>All our products undergo rigorous quality testing to ensure superior performance and durability.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-shield-alt feature-icon"></i>
-                    <h3>Extended Warranty</h3>
-                    <p>Comprehensive warranty coverage from 2 to 5 years on all our electronic products.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-tools feature-icon"></i>
-                    <h3>Expert Support</h3>
-                    <p>Dedicated customer service and technical support to help you with installation and maintenance.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-shipping-fast feature-icon"></i>
-                    <h3>Fast Delivery</h3>
-                    <p>Quick and secure delivery across India with professional installation services.</p>
-                </div>
-            </div>
+        <div class="feature-card">
+          <i class="fas fa-plug feature-icon"></i>
+          <h3>Stabilizers & Irons</h3>
+          <p>Voltage stabilizers and electric dry irons for reliable performance<br><strong>5 Models Available</strong></p>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <!-- Product Showcase Section -->
-    <section class="product-showcase">
-        <div class="container">
-            <h2 class="section-title">Featured Products</h2>
-            <div class="showcase-grid">
-                <!-- Premium TV Showcase -->
-                <div class="showcase-item">
-                    <div class="showcase-image">
-                        <img src="assets/images/showcase-65-4k.jpg" alt="65 inch 4K UHD Android TV" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <div class="showcase-fallback" style="display: none;">
-                            <i class="fas fa-tv"></i>
-                        </div>
-                    </div>
-                    <div class="showcase-details">
-                        <h4>65" 4K UHD Android TV</h4>
-                        <p>Ultra-large screen with stunning 4K resolution and smart Android TV features</p>
-                        <div class="showcase-specs">
-                            <span>4K UHD</span>
-                            <span>Android TV</span>
-                            <span>Voice Command</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Washing Machine Showcase -->
-                <div class="showcase-item">
-                    <div class="showcase-image">
-                        <img src="assets/images/showcase-11kg-washing.jpg" alt="11 KG Semi Automatic Washing Machine" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <div class="showcase-fallback" style="display: none;">
-                            <i class="fas fa-tshirt"></i>
-                        </div>
-                    </div>
-                    <div class="showcase-details">
-                        <h4>SAWM - 11.0 KG</h4>
-                        <p>Large capacity semi-automatic washing machine perfect for big families</p>
-                        <div class="showcase-specs">
-                            <span>11 KG Capacity</span>
-                            <span>200W Motor</span>
-                            <span>Glass Top</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Electronics Showcase -->
-                <div class="showcase-item">
-                    <div class="showcase-image">
-                        <img src="assets/images/showcase-stabilizer.jpg" alt="LED Electronic Voltage Stabilizer" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <div class="showcase-fallback" style="display: none;">
-                            <i class="fas fa-plug"></i>
-                        </div>
-                    </div>
-                    <div class="showcase-details">
-                        <h4>LED Electronic Stabilizer</h4>
-                        <p>Advanced voltage protection for your valuable electronic devices</p>
-                        <div class="showcase-specs">
-                            <span>5 Year Warranty</span>
-                            <span>Digital Technology</span>
-                            <span>100% Safe</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>MAKWELL</h3>
+          <p class="footer-tagline">MAKE IT HAPPEN</p>
+          <p>Premium electronics for modern living.<br>Quality products. Reliable service.</p>
         </div>
-    </section>
-
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
-                    <img src="assets/images/logo.jpg" alt="MAKWELL Logo" class="logo-img" onerror="this.style.display='none'">
-                    <div>
-                        <h3>MAKWELL</h3>
-                        <p class="footer-tagline">MAKE IT HAPPEN</p>
-                    </div>
-                </div>
-                <p>Premium electronics for modern living. Quality products with reliable performance.</p>
-            </div>
-            <div class="footer-section">
-                <h4>Quick Links</h4>
-                <ul class="footer-links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="products.html">Products</a></li>
-                    <li><a href="about.html">About Us</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                    <li><a href="new-arrivals.html">New Arrivals</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Contact Info</h4>
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <span>makwellindia456@gmail.com</span>
-                </div>
-                <div class="contact-item">
-                    <i class="fab fa-whatsapp"></i>
-                    <span>+91 99800 00515</span>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>Hubli, Karnataka, India</span>
-                </div>
-            </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="new-arrivals.html">New Arrivals</a></li>
+          </ul>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 MAKWELL - PUSHPAK ENTERPRISES. All rights reserved.</p>
+        <div class="footer-section">
+          <h4>Contact Info</h4>
+          <div class="contact-item"><i class="fas fa-envelope"></i> makwellindia456@gmail.com</div>
+          <div class="contact-item"><i class="fab fa-whatsapp"></i> +91 99800 00515</div>
+          <div class="contact-item"><i class="fas fa-map-marker-alt"></i> Hubli, Karnataka, India</div>
         </div>
-    </footer>
-
-  <script src="app.js"></script>
-
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 MAKWELL - PUSHPAK ENTERPRISES. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <script src="assets/js/app.js"></script>
 </body>
 </html>
