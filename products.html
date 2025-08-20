@@ -1,49 +1,564 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MAKWELL | Products</title>
-  <link rel="stylesheet" href="assets/css/style-1.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAKWELL - MAKE IT HAPPEN | Products</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-  <!-- Navigation (same as above) -->
-
-  <!-- Products Section -->
-  <section class="products-section">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Our Products</h2>
-        <p class="section-subtitle">Discover our full range of premium electronics</p>
-      </div>
-      <div class="products-grid">
-        <div class="product-card">
-          <div class="product-image">
-            <img src="assets/images/tv-24-android.jpg" alt="24 inch Android TV">
-            <i class="fas fa-tv"></i>
-            <div class="product-badge">Android TV</div>
-          </div>
-          <div class="product-info">
-            <h4>24" Full HD Android TV</h4>
-            <p class="product-size">24 inch (60cm)</p>
-            <p class="product-type">Smart Android TV</p>
-            <div class="product-specs">
-              <span class="spec-item">Full HD 1080p</span>
-              <span class="spec-item">WiFi, HDMI, USB</span>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="assets/images/logo.jpg" alt="MAKWELL Logo" class="logo-img" 
+                     onerror="this.style.display='none'; document.querySelector('.nav-logo-text').classList.add('visible');">
+                <div class="nav-logo-text">
+                    <h2>MAKWELL</h2>
+                    <span class="tagline">MAKE IT HAPPEN</span>
+                </div>
             </div>
-            <ul class="product-features">
-              <li>Netflix, Prime Video, Disney+</li>
-              <li>Screen Share, App Store</li>
-              <li>Dolby Audio</li>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="products.html" class="nav-link">Products</a></li>
+                <li><a href="about.html" class="nav-link">About Us</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+                <li><a href="new-arrivals.html" class="nav-link">New Arrivals</a></li>
             </ul>
-          </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
-        <!-- Add more .product-card as needed for each product -->
-      </div>
-    </div>
-  </section>
-  <!-- Footer (same as above) -->
-  <script src="assets/js/app.js"></script>
+    </nav>
+
+    <!-- Products Section -->
+    <section id="products" class="products-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Our Products</h2>
+                <p class="section-subtitle">Discover our comprehensive range of premium electronics designed for modern living</p>
+            </div>
+
+            <!-- Product Tabs -->
+            <div class="product-tabs">
+                <button class="tab-btn active" data-tab="tvs">
+                    <i class="fas fa-tv"></i>
+                    Smart TVs & LED TVs
+                </button>
+                <button class="tab-btn" data-tab="washing-machines">
+                    <i class="fas fa-tshirt"></i>
+                    Washing Machines
+                </button>
+                <button class="tab-btn" data-tab="electronics">
+                    <i class="fas fa-plug"></i>
+                    Electronics
+                </button>
+            </div>
+
+            <!-- TV Products Tab -->
+            <div class="tab-content active" id="tvs">
+                <h3 class="tab-title">Smart TVs & LED TVs</h3>
+                <div class="products-grid">
+                    <!-- 24 inch Non-Smart TV -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="assets/images/MK24.png" alt="24 inch Full HD LED TV" onerror="this.parentElement.classList.add('fallback')">
+                            <i class="fas fa-tv"></i>
+                            <div class="product-badge">HD Ready</div>
+                        </div>
+                        <div class="product-info">
+                            <h4>24" Full HD LED TV</h4>
+                            <p class="product-size">24 inch (60cm)</p>
+                            <p class="product-type">Non-Smart TV</p>
+                            <div class="product-specs">
+                                <span class="spec-item">Full HD 1080p</span>
+                                <span class="spec-item">16.7M Colors</span>
+                                <span class="spec-item">2 HDMI + 2 USB</span>
+                            </div>
+                            <ul class="product-features">
+                                <li>Zero Dot Panel</li>
+                                <li>Smart Energy Saving</li>
+                                <li>Surround Sound</li>
+                                <li>PC Input Support</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 24 inch Android TV -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="assets/images/MK24.png" alt="24 inch Android TV" onerror="this.parentElement.classList.add('fallback')">
+                            <i class="fas fa-tv"></i>
+                            <div class="product-badge">Android TV</div>
+                        </div>
+                        <div class="product-info">
+                            <h4>24" Full HD Android TV</h4>
+                            <p class="product-size">24 inch (60cm)</p>
+                            <p class="product-type">Android TV</p>
+                            <div class="product-specs">
+                                <span class="spec-item">Full HD 1080p</span>
+                                <span class="spec-item">WiFi + LAN</span>
+                                <span class="spec-item">Dolby Audio</span>
+                            </div>
+                            <ul class="product-features">
+                                <li>Netflix, Prime Video, Disney+</li>
+                                <li>Screen Share</li>
+                                <li>App Store</li>
+                                <li>Low Power Consumption</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 32 inch Non-Smart TV -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="assets/images/MK32.png" alt="32 inch HD LED TV" onerror="this.parentElement.classList.add('fallback')">
+                            <i class="fas fa-tv"></i>
+                            <div class="product-badge">HD Ready</div>
+                        </div>
+                        <div class="product-info">
+                            <h4>32" HD Ready LED TV</h4>
+                            <p class="product-size">32 inch (80cm)</p>
+                            <p class="product-type">Non-Smart TV</p>
+                            <div class="product-specs">
+                                <span class="spec-item">HD Ready</span>
+                                <span class="spec-item">16.7M Colors</span>
+                                <span class="spec-item">Auto Power Save</span>
+                            </div>
+                            <ul class="product-features">
+                                <li>Zero Dot Panel</li>
+                                <li>PC Input Support</li>
+                                <li>Surround Sound</li>
+                                <li>Energy Efficient</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 32 inch Android TV -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="assets/images/MK32.png" alt="32 inch Android TV" onerror="this.parentElement.classList.add('fallback')">
+                            <i class="fas fa-tv"></i>
+                            <div class="product-badge">Smart TV</div>
+                        </div>
+                        <div class="product-info">
+                            <h4>32" HD Android TV</h4>
+                            <p class="product-size">32 inch (80cm)</p>
+                            <p class="product-type">Android TV</p>
+                            <div class="product-specs">
+                                <span class="spec-item">HD Ready</span>
+                                <span class="spec-item">Voice Command</span>
+                                <span class="spec-item">Slim Bezel</span>
+                            </div>
+                            <ul class="product-features">
+                                <li>Netflix, Prime Video, Disney+</li>
+                                <li>WiFi + LAN Connectivity</li>
+                                <li>Dolby Audio</li>
+                                <li>Screen Share</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 40 inch Android TV -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="assets/images/MK40.png" alt="40 inch Android TV" onerror="this.parentElement.classList.add('fallback')">
+                            <i class="fas fa-tv"></i>
+                            <div class="product-badge">Smart TV</div>
+                        </div>
+                        <div class="product-info">
+                            <h4>40" HD Android TV</h4>
+                            <p class="product-size">40 inch (100cm)</p>
+                            <p class="product-type">Android TV</p>
+                            <div class="product-specs">
+                                <span class="spec-item">HD Ready</span>
+                                <span class="spec-item">Slim Bezel</span>
+                                <span class="spec-item">Low Power</span>
+                            </div>
+                            <ul class="product-features">
+                                <li>All Popular Streaming Apps</li>
+                                <li>Screen Share</li>
+                                <li>App Store Access</li>
+                                <li>Dolby Audio</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 43 inch Android TV -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="assets/images/MK43.png" alt="43 inch Full HD Android TV" onerror="this.parentElement.classList.add('fallback')">
+                            <i class="fas fa-tv"></i>
+                            <div class="product-badge">Full HD</div>
+                        </div>
+                        <div class="product-info">
+                            <h4>43" Full HD Android TV</h4>
+                            <p class="product-size">43 inch (108cm)</p>
+                            <p class="product-type">Android TV</p>
+                            <div class="product-specs">
+                                <span class="spec-item">Full HD 1080p</span>
+                                <span class="spec-item">Voice Command</span>
+                                <span class="spec-item">Slim Bezel</span>
+                            </div>
+                            <ul class="product-features">
+                                <li>Netflix, Prime Video, Disney+</li>
+                                <li>Voice Command Support</li>
+                                <li>Screen Share</li>
+                                <li>Low Power Consumption</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 50 inch 4K TV -->
+                    <div class="product-card featured">
+                        <div class="product-image">
+                            <img src="assets/images/MK55
+                                .png" alt="50 inch 4K UHD Android TV" onerror="this.parentElement.classList.add('fallback')">
+                            <i class="fas fa-tv"></i>
+                            <div class="product-badge premium">4K UHD</div>
+                        </div>
+                        <div class="product-info">
+                            <h4>50" 4K UHD Android TV</h4>
+                            <p class="product-size">50 inch (126cm)</p>
+                            <p class="product-type">Premium Android TV</p>
+                            <div class="product-specs">
+                                <span class="spec-item">4K UHD</span>
+                                <span class="spec-item">Voice Command</span>
+                                <span class="spec-item">Dolby Audio</span>
+                            </div>
+                            <ul class="product-features">
+                                <li>4K Ultra HD Resolution</li>
+                                <li>16.7 Million Colors</li>
+                                <li>All Streaming Apps</li>
+                                <li>Zero Dot Panel</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 55 inch 4K TV -->
+                    <div class="product-card featured">
+                        <div class="product-image">
+                            <img src="assets/images/MK55.png" alt="55 inch 4K UHD Android TV" onerror="this.parentElement.classList.add('fallback')">
+                            <i class="fas fa-tv"></i>
+                            <div class="product-badge premium">4K UHD</div>
+                        </div>
+                        <div class="product-info">
+                            <h4>55" 4K UHD Android TV</h4>
+                            <p class="product-size">55 inch (139cm)</p>
+                            <p class="product-type">Premium Android TV</p>
+                            <div class="product-specs">
+                                <span class="spec-item">4K UHD</span>
+                                <span class="spec-item">Voice Command</span>
+                                <span class="spec-item">Dolby Audio</span>
+                            </div>
+                            <ul class="product-features">
+                                <li>4K Ultra HD Resolution</li>
+                                <li>Voice Command Support</li>
+                                <li>Netflix, Prime Video, Disney+</li>
+                                <li>Low Power Consumption</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 65 inch 4K TV -->
+                    <div class="product-card featured">
+                        <div class="product-image">
+                            <img src="assets/images/MK65.png" alt="65 inch 4K UHD Android TV" onerror="this.parentElement.classList.add('fallback')">
+                            <i class="fas fa-tv"></i>
+                            <div class="product-badge premium">4K UHD</div>
+                        </div>
+                        <div class="product-info">
+                            <h4>65" 4K UHD Android TV</h4>
+                            <p class="product-size">65 inch (165cm)</p>
+                            <p class="product-type">Premium Android TV</p>
+                            <div class="product-specs">
+                                <span class="spec-item">4K UHD</span>
+                                <span class="spec-item">Voice Command</span>
+                                <span class="spec-item">Dolby Audio</span>
+                            </div>
+                            <ul class="product-features">
+                                <li>Large Screen 4K Experience</li>
+                                <li>16.7 Million Colors</li>
+                                <li>All Popular Apps</li>
+                                <li>Screen Share</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Washing Machines Tab -->
+            <div class="tab-content" id="washing-machines">
+                <h3 class="tab-title">Semi-Automatic Washing Machines</h3>
+                <div class="products-grid">
+                    <!-- 7 KG Washing Machine -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="assets/images/MKW7.png" alt="7KG Semi Automatic Washing Machine" onerror="this.parentElement.classList.add('fallback')">
+                            <i class="fas fa-tshirt"></i>
+                            <div class="product-badge">7.0 KG</div>
+                        </div>
+                        <div class="product-info">
+                            <h4>SAWM - 7.0 KG</h4>
+                            <p class="product-size">7.0 KG Capacity</p>
+                            <p class="product-type">Semi Automatic</p>
+                            <div class="product-specs">
+                                <span class="spec-item">135W Motor</span>
+                                <span class="spec-item">2 Programs</span>
+                                <span class="spec-item">Lint Filter</span>
+                            </div>
+                            <ul class="product-features">
+                                <li>Toughened Glass Top</li>
+                                <li>ABS Body</li>
+                                <li>Diamond Steel Drum</li>
+                                <li>Heavy Wash Pulsator</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 9 KG Washing Machine -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="assets/images/MKW09.png" alt="9KG Semi Automatic Washing Machine" onerror="this.parentElement.classList.add('fallback')">
+                            <i class="fas fa-tshirt"></i>
+                            <div class="product-badge">9.0 KG</div>
+                        </div>
+                        <div class="product-info">
+                            <h4>SAWM - 9.0 KG</h4>
+                            <p class="product-size">9.0 KG Capacity</p>
+                            <p class="product-type">Semi Automatic</p>
+                            <div class="product-specs">
+                                <span class="spec-item">180W Motor</span>
+                                <span class="spec-item">2 Programs</span>
+                                <span class="spec-item">Double Magic Filter</span>
+                            </div>
+                            <ul class="product-features">
+                                <li>Toughened Glass Top</li>
+                                <li>Powerful 180W Motor</li>
+                                <li>Diamond Steel Drum</li>
+                                <li>Advanced Filtration</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 11 KG Washing Machine -->
+                    <div class="product-card featured">
+                        <div class="product-image">
+                            <img src="assets/images/MKW11.png" alt="11KG Semi Automatic Washing Machine" onerror="this.parentElement.classList.add('fallback')">
+                            <i class="fas fa-tshirt"></i>
+                            <div class="product-badge premium">11.0 KG</div>
+                        </div>
+                        <div class="product-info">
+                            <h4>SAWM - 11.0 KG</h4>
+                            <p class="product-size">11.0 KG Capacity</p>
+                            <p class="product-type">Semi Automatic</p>
+                            <div class="product-specs">
+                                <span class="spec-item">200W Motor</span>
+                                <span class="spec-item">2 Programs</span>
+                                <span class="spec-item">Double Magic Filter</span>
+                            </div>
+                            <ul class="product-features">
+                                <li>Large Family Capacity</li>
+                                <li>Most Powerful 200W Motor</li>
+                                <li>Toughened Glass Top</li>
+                                <li>Heavy Wash Pulsator</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Electronics Tab -->
+            <div class="tab-content" id="electronics">
+                <h3 class="tab-title">Electronics & Accessories</h3>
+                
+                <!-- Voltage Stabilizers -->
+                <div class="product-category">
+                    <h4 class="category-title">Electronic Voltage Stabilizers</h4>
+                    <div class="products-grid">
+                        <!-- 500VA LED Stabilizer -->
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="assets/images/Ref.png" alt="500VA LED Voltage Stabilizer" onerror="this.parentElement.classList.add('fallback')">
+                                <i class="fas fa-plug"></i>
+                                <div class="product-badge">500VA</div>
+                            </div>
+                            <div class="product-info">
+                                <h4>LED Electronic Voltage Stabilizer</h4>
+                                <p class="product-size">500VA</p>
+                                <p class="product-type">For LED TV up to 55"</p>
+                                <div class="product-specs">
+                                    <span class="spec-item">5 Year Warranty</span>
+                                    <span class="spec-item">Light Weight</span>
+                                    <span class="spec-item">100% Safe</span>
+                                </div>
+                                <ul class="product-features">
+                                    <li>Digital Technology</li>
+                                    <li>High/Low Voltage Cut Off</li>
+                                    <li>LED Indicators</li>
+                                    <li>Compact Design</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- 500VA Smart Plus -->
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="assets/images/mini.png" alt="Smart Plus Voltage Stabilizer" onerror="this.parentElement.classList.add('fallback')">
+                                <i class="fas fa-plug"></i>
+                                <div class="product-badge">Smart Plus</div>
+                            </div>
+                            <div class="product-info">
+                                <h4>LED Smart Plus Voltage Stabilizer</h4>
+                                <p class="product-size">500VA</p>
+                                <p class="product-type">For LED TV up to 40"</p>
+                                <div class="product-specs">
+                                    <span class="spec-item">5 Year Warranty</span>
+                                    <span class="spec-item">Light Weight</span>
+                                    <span class="spec-item">Smart Features</span>
+                                </div>
+                                <ul class="product-features">
+                                    <li>Advanced Digital Technology</li>
+                                    <li>100% Safe Operation</li>
+                                    <li>High/Low Voltage Protection</li>
+                                    <li>Enhanced Efficiency</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- 750W Stabilizer -->
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="assets/images/stabilizer-750w.jpg" alt="750W LED Voltage Stabilizer" onerror="this.parentElement.classList.add('fallback')">
+                                <i class="fas fa-plug"></i>
+                                <div class="product-badge">750W</div>
+                            </div>
+                            <div class="product-info">
+                                <h4>LED Electronic Voltage Stabilizer</h4>
+                                <p class="product-size">750W</p>
+                                <p class="product-type">For LED TV up to 75" / Refrigerator up to 365L</p>
+                                <div class="product-specs">
+                                    <span class="spec-item">5 Year Warranty</span>
+                                    <span class="spec-item">High Capacity</span>
+                                    <span class="spec-item">Multi-Purpose</span>
+                                </div>
+                                <ul class="product-features">
+                                    <li>High Power Handling</li>
+                                    <li>Suitable for Large TVs</li>
+                                    <li>Refrigerator Compatible</li>
+                                    <li>Digital Technology</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Electric Dry Irons -->
+                <div class="product-category">
+                    <h4 class="category-title">Electric Dry Irons</h4>
+                    <div class="products-grid">
+                        <!-- 750W Iron -->
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="assets/images/iron-750w.jpg" alt="750W Automatic Electric Dry Iron" onerror="this.parentElement.classList.add('fallback')">
+                                <i class="fas fa-iron"></i>
+                                <div class="product-badge">750W</div>
+                            </div>
+                            <div class="product-info">
+                                <h4>Automatic Electric Dry Iron</h4>
+                                <p class="product-size">750W</p>
+                                <p class="product-type">Light Weight</p>
+                                <div class="product-specs">
+                                    <span class="spec-item">24 Months Warranty</span>
+                                    <span class="spec-item">Auto Pilot</span>
+                                    <span class="spec-item">Energy Saving</span>
+                                </div>
+                                <ul class="product-features">
+                                    <li>Computerized Auto Pilot</li>
+                                    <li>Temperature Controller</li>
+                                    <li>100% Energy Tested</li>
+                                    <li>Lightweight Design</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- 1000W Iron -->
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="assets/images/iron-1000w.jpg" alt="1000W Electric Dry Iron" onerror="this.parentElement.classList.add('fallback')">
+                                <i class="fas fa-iron"></i>
+                                <div class="product-badge">1000W</div>
+                            </div>
+                            <div class="product-info">
+                                <h4>Electric Dry Iron</h4>
+                                <p class="product-size">1000W</p>
+                                <p class="product-type">Heavy Weight</p>
+                                <div class="product-specs">
+                                    <span class="spec-item">24 Months Warranty</span>
+                                    <span class="spec-item">High Power</span>
+                                    <span class="spec-item">Durable</span>
+                                </div>
+                                <ul class="product-features">
+                                    <li>High Power Performance</li>
+                                    <li>Temperature Controller</li>
+                                    <li>Energy Efficient</li>
+                                    <li>Heavy Duty Construction</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                    <img src="assets/images/logo.jpg" alt="MAKWELL Logo" class="logo-img" onerror="this.style.display='none'">
+                    <div>
+                        <h3>MAKWELL</h3>
+                        <p class="footer-tagline">MAKE IT HAPPEN</p>
+                    </div>
+                </div>
+                <p>Premium electronics for modern living. Quality products with reliable performance.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="new-arrivals.html">New Arrivals</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Info</h4>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>makwellindia456@gmail.com</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>+91 99800 00515</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Hubli, Karnataka, India</span>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 MAKWELL - PUSHPAK ENTERPRISES. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
 </body>
 </html>
