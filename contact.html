@@ -1,29 +1,279 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MAKWELL | Contact</title>
-  <link rel="stylesheet" href="assets/css/style-1.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAKWELL - MAKE IT HAPPEN | Contact Us</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-  <!-- Navigation (same as above) -->
-  <section class="contact-section">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Contact MAKWELL</h2>
-        <p class="section-subtitle">We're here to help you!</p>
-      </div>
-      <div style="max-width:500px;margin:0 auto;text-align:center;">
-        <div class="contact-item"><i class="fab fa-whatsapp"></i> WhatsApp: +91 99800 00515</div>
-        <div class="contact-item"><i class="fas fa-envelope"></i> Email: makwellindia456@gmail.com</div>
-        <div class="contact-item"><i class="fas fa-map-marker-alt"></i> Hubli, Karnataka, India</div>
-        <p style="margin-top:2rem;">Business Hours: <br>Mon-Sat 9am-8pm, Sun 10am-6pm</p>
-      </div>
-    </div>
-  </section>
-  <!-- Footer (same as above) -->
-  <script src="assets/js/app.js"></script>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="assets/images/logo.jpg" alt="MAKWELL Logo" class="logo-img" 
+                     onerror="this.style.display='none'; document.querySelector('.nav-logo-text').classList.add('visible');">
+                <div class="nav-logo-text">
+                    <h2>MAKWELL</h2>
+                    <span class="tagline">MAKE IT HAPPEN</span>
+                </div>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="products.html" class="nav-link">Products</a></li>
+                <li><a href="about.html" class="nav-link">About Us</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+                <li><a href="new-arrivals.html" class="nav-link">New Arrivals</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contact Us Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Contact Us</h2>
+                <p class="section-subtitle">Get in touch with us for any queries, support, or business inquiries</p>
+            </div>
+
+            <div class="contact-content">
+                <!-- Contact Information -->
+                <div class="contact-info">
+                    <div class="contact-card">
+                        <i class="fas fa-envelope contact-icon"></i>
+                        <h3>Email Us</h3>
+                        <p>Send us your queries and we'll get back to you within 24 hours</p>
+                        <a href="mailto:makwellindia456@gmail.com" class="contact-link">makwellindia456@gmail.com</a>
+                    </div>
+
+                    <div class="contact-card">
+                        <i class="fab fa-whatsapp contact-icon"></i>
+                        <h3>WhatsApp Support</h3>
+                        <p>Customer Care available for immediate assistance</p>
+                        <a href="https://wa.me/919980000515" class="contact-link" target="_blank">+91 99800 00515</a>
+                    </div>
+
+                    <div class="contact-card">
+                        <i class="fas fa-phone contact-icon"></i>
+                        <h3>Call Us</h3>
+                        <p>Speak directly with our customer support team</p>
+                        <a href="tel:+919980000515" class="contact-link">+91 99800 00515</a>
+                    </div>
+
+                    <div class="contact-card">
+                        <i class="fas fa-map-marker-alt contact-icon"></i>
+                        <h3>Visit Us</h3>
+                        <p>Our manufacturing and office location</p>
+                        <address class="contact-address">
+                            PUSHPAK ENTERPRISES<br>
+                            Hubli - 580031<br>
+                            Karnataka, India
+                        </address>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="contact-form-container">
+                    <div class="form-header">
+                        <h3>Send us a Message</h3>
+                        <p>Fill out the form below and we'll respond to your inquiry as soon as possible</p>
+                    </div>
+
+                    <form class="contact-form" id="contactForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name *</label>
+                                <input type="text" id="firstName" name="firstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name *</label>
+                                <input type="text" id="lastName" name="lastName" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number *</label>
+                                <input type="tel" id="phone" name="phone" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subject">Subject *</label>
+                            <select id="subject" name="subject" required>
+                                <option value="">Select a subject</option>
+                                <option value="product-inquiry">Product Inquiry</option>
+                                <option value="technical-support">Technical Support</option>
+                                <option value="warranty-claim">Warranty Claim</option>
+                                <option value="business-inquiry">Business Inquiry</option>
+                                <option value="feedback">Feedback</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="product">Product of Interest (Optional)</label>
+                            <select id="product" name="product">
+                                <option value="">Select a product</option>
+                                <optgroup label="Smart TVs & LED TVs">
+                                    <option value="24-inch-non-smart">24" Full HD LED TV (Non-Smart)</option>
+                                    <option value="24-inch-android">24" Full HD Android TV</option>
+                                    <option value="32-inch-non-smart">32" HD Ready LED TV (Non-Smart)</option>
+                                    <option value="32-inch-android">32" HD Ready Android TV</option>
+                                    <option value="40-inch-android">40" HD Ready Android TV</option>
+                                    <option value="43-inch-android">43" Full HD Android TV</option>
+                                    <option value="50-inch-4k">50" 4K UHD Android TV</option>
+                                    <option value="55-inch-4k">55" 4K UHD Android TV</option>
+                                    <option value="65-inch-4k">65" 4K UHD Android TV</option>
+                                </optgroup>
+                                <optgroup label="Washing Machines">
+                                    <option value="washing-7kg">SAWM - 7.0 KG</option>
+                                    <option value="washing-9kg">SAWM - 9.0 KG</option>
+                                    <option value="washing-11kg">SAWM - 11.0 KG</option>
+                                </optgroup>
+                                <optgroup label="Electronics">
+                                    <option value="stabilizer-500va">LED Electronic Voltage Stabilizer 500VA</option>
+                                    <option value="stabilizer-smart-plus">LED Smart Plus Voltage Stabilizer 500VA</option>
+                                    <option value="stabilizer-750w">LED Electronic Voltage Stabilizer 750W</option>
+                                    <option value="iron-750w">Automatic Electric Dry Iron 750W</option>
+                                    <option value="iron-1000w">Electric Dry Iron 1000W</option>
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" rows="5" required placeholder="Tell us more about your inquiry..."></textarea>
+                        </div>
+
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="newsletter" name="newsletter">
+                            <label for="newsletter">I would like to receive updates about new products and offers</label>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn--primary">
+                                <i class="fas fa-paper-plane"></i>
+                                Send Message
+                            </button>
+                            <button type="reset" class="btn btn--outline">
+                                <i class="fas fa-redo"></i>
+                                Clear Form
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="form-success" id="formSuccess" style="display: none;">
+                        <i class="fas fa-check-circle"></i>
+                        <h4>Message Sent Successfully!</h4>
+                        <p>Thank you for contacting MAKWELL. We'll get back to you within 24 hours.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Business Hours -->
+            <div class="business-info">
+                <div class="business-card">
+                    <i class="fas fa-clock business-icon"></i>
+                    <h3>Business Hours</h3>
+                    <div class="hours-list">
+                        <div class="hours-item">
+                            <span class="day">Monday - Friday</span>
+                            <span class="time">9:00 AM - 6:00 PM</span>
+                        </div>
+                        <div class="hours-item">
+                            <span class="day">Saturday</span>
+                            <span class="time">9:00 AM - 4:00 PM</span>
+                        </div>
+                        <div class="hours-item">
+                            <span class="day">Sunday</span>
+                            <span class="time">Closed</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="business-card">
+                    <i class="fas fa-headset business-icon"></i>
+                    <h3>Customer Support</h3>
+                    <p>Our dedicated support team is here to help you with:</p>
+                    <ul class="support-list">
+                        <li>Product information and specifications</li>
+                        <li>Technical support and troubleshooting</li>
+                        <li>Warranty claims and service requests</li>
+                        <li>Installation and setup assistance</li>
+                        <li>General inquiries and feedback</li>
+                    </ul>
+                </div>
+
+                <div class="business-card">
+                    <i class="fas fa-truck business-icon"></i>
+                    <h3>Delivery & Service</h3>
+                    <p>We provide comprehensive delivery and service across India:</p>
+                    <ul class="service-list">
+                        <li>Free delivery within city limits</li>
+                        <li>Professional installation services</li>
+                        <li>Pan-India service network</li>
+                        <li>Genuine spare parts availability</li>
+                        <li>Extended warranty options</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                    <img src="assets/images/logo.jpg" alt="MAKWELL Logo" class="logo-img" onerror="this.style.display='none'">
+                    <div>
+                        <h3>MAKWELL</h3>
+                        <p class="footer-tagline">MAKE IT HAPPEN</p>
+                    </div>
+                </div>
+                <p>Premium electronics for modern living. Quality products with reliable performance.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="new-arrivals.html">New Arrivals</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Info</h4>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>makwellindia456@gmail.com</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>+91 99800 00515</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Hubli, Karnataka, India</span>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 MAKWELL - PUSHPAK ENTERPRISES. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
 </body>
 </html>
