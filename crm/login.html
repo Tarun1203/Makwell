@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sign in • MakWell CRM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/crm-styles.css">
+</head>
+<body>
+
+<div class="auth-shell">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <img src="../assets/logo.jpg" alt="">
+      <span>MakWell CRM</span>
+    </div>
+    <h1>Sign in</h1>
+    <p class="sub">Internal operations, dealer, service and admin console.</p>
+
+    <div class="note" style="margin-bottom:20px;" id="modeNote">
+      This build isn't connected to a live Firebase project yet — sign-in is simulated for Phase 1. Pick a role below to see that role's console.
+    </div>
+
+    <form id="loginForm" novalidate>
+      <div class="field" data-field="email">
+        <label for="email">Email <span class="req">*</span></label>
+        <input type="email" id="email" required placeholder="you@makwell.in" value="anita.rao@makwell.in">
+        <div class="error">Enter an email address.</div>
+      </div>
+      <div class="field" data-field="password">
+        <label for="password">Password <span class="req">*</span></label>
+        <input type="password" id="password" required placeholder="••••••••" value="demo1234">
+        <div class="error">Enter a password.</div>
+      </div>
+      <div class="field" data-field="role">
+        <label for="role">Sign in as</label>
+        <select id="role">
+          <option value="Super Admin">Super Admin</option>
+          <option value="Warehouse">Warehouse</option>
+          <option value="Service Center">Service Center</option>
+          <option value="Technician">Technician</option>
+          <option value="Dealer">Dealer</option>
+        </select>
+        <div class="hint">Try known demo users: anita.rao (Super Admin), suresh.patil (Warehouse), ramesh.k (Service Center), vinod.naik (Technician), deepa.traders (Dealer) @makwell.in / @example.com</div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block" style="padding:12px; margin-top:6px;">Sign in</button>
+    </form>
+  </div>
+</div>
+
+<script type="module" src="../assets/mock-db.js"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', async () => {
+    // window.MOCK_MODE is assigned by mock-db.js's module-level code, which
+    // (per module execution order) has already run by the time this fires.
+    if (window.MOCK_MODE === false) {
+      document.getElementById('modeNote').innerHTML = 'Connected to a live Firebase project. Sign in with a real account, or a new email + password to auto-provision one as Super Admin (see the comment at the top of <code>mock-db.js</code> before leaving this open to the public).';
+    }
+  });
+
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const emailEl = document.getElementById('email');
+    const passEl = document.getElementById('password');
+    const roleEl = document.getElementById('role');
+    let valid = true;
+    [emailEl, passEl].forEach(el => {
+      const wrap = el.closest('.field');
+      if (!el.value.trim()) { valid = false; wrap.classList.add('has-error'); }
+      else wrap.classList.remove('has-error');
+    });
+    if (!valid) return;
+
+    const submitBtn = e.target.querySelector('button[type=submit]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Signing in…';
+
+    await db.ready;
+    const user = await db.auth.signIn(emailEl.value.trim(), passEl.value, roleEl.value);
+    const params = new URLSearchParams({ uid: user.id, name: user.name, email: user.email, role: user.role });
+    location.href = 'crm.html?' + params.toString();
+  });
+</script>
+</body>
+</html>

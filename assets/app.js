@@ -1,5 +1,5 @@
 // MakWell — shared behavior across pages
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
@@ -46,6 +46,10 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
+
+  // Everything below reads the shared catalog — wait for bootstrap (mock mode
+  // resolves this immediately; live mode waits for Firestore to hydrate first).
+  if (window.db) await db.ready;
 
   // Product -> Model dependent dropdown (contact page), backed by the shared CRM catalog
   const productSelect = document.getElementById('ct_product');
