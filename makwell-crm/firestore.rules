@@ -1,0 +1,118 @@
+// =========================================================================
+// MakWell CRM — Firestore Security Rules (starting point)
+// -------------------------------------------------------------------------
+// Deploy with: firebase deploy --only firestore:rules
+// (requires the Firebase CLI: npm install -g firebase-tools, then
+// `firebase login` and `firebase init firestore` once in this project.)
+//
+// WHAT THIS DOES:
+// - Requires sign-in for everything. No collection is publicly readable
+//   or writable, including from the public website — website form
+//   submissions go through db.websiteLeads.add(), which runs as an
+//   authenticated write from the browser session, same as any other
+//   CRM action. There is currently no "anonymous" write path.
+// - Role checks read the requester's own /users/{uid} document to find
+//   their role, then compare against what each collection allows.
+// - This is a REASONABLE STARTING POINT for a small internal team, not a
+//   hardened ruleset. It does not yet enforce field-level constraints
+//   (e.g. a Technician editing amounts on a Local Purchase they don't
+//   own), rate limiting, or write-size limits. Tighten before wider
+//   rollout — especially before the public website writes directly to
+//   Firestore from an untrusted browser.
+// =========================================================================
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---- Helpers -----------------------------------------------------
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    function myRole() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+    function isSuperAdmin() {
+      return isSignedIn() && myRole() == 'Super Admin';
+    }
+    function hasRole(roles) {
+      return isSignedIn() && myRole() in roles;
+    }
+
+    // ---- Users & Roles: only Super Admin manages accounts -------------
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      // Anyone signed in may create their OWN profile once (first-login
+      // auto-provision, see db.auth.signIn's fallback) — never someone else's.
+      allow create: if isSignedIn() && request.auth.uid == userId;
+      allow update, delete: if isSuperAdmin();
+    }
+
+    // ---- Foundation: catalog data, readable by everyone signed in -----
+    match /categories/{id} { allow read: if isSignedIn(); allow write: if isSuperAdmin(); }
+    match /warrantyRules/{id} { allow read: if isSignedIn(); allow write: if isSuperAdmin(); }
+    match /products/{id} { allow read: if isSignedIn(); allow write: if hasRole(['Super Admin']); }
+    match /serials/{id} { allow read: if isSignedIn(); allow write: if hasRole(['Super Admin', 'Warehouse']); }
+
+    // ---- Customers: broad read (needed across Service/Finance/RMA),
+    // write from roles that actually create/touch customer records ------
+    match /customers/{id} {
+      allow read: if isSignedIn();
+      allow write: if hasRole(['Super Admin', 'Service Center', 'Dealer']);
+    }
+
+    // ---- Service Centers & Technicians: Super Admin manages the roster,
+    // everyone signed in can read (needed for routing/assignment UI) ----
+    match /serviceCenters/{id} { allow read: if isSignedIn(); allow write: if isSuperAdmin(); }
+    match /technicians/{id} { allow read: if isSignedIn(); allow write: if hasRole(['Super Admin']); }
+
+    // ---- Service Hub: broad read/write for the roles that run it ------
+    match /serviceRequests/{id} {
+      allow read: if isSignedIn();
+      allow write: if hasRole(['Super Admin', 'Service Center', 'Technician']);
+    }
+
+    // ---- Inventory -----------------------------------------------------
+    match /spareParts/{id} { allow read: if isSignedIn(); allow write: if hasRole(['Super Admin', 'Warehouse']); }
+    match /stockLevels/{id} { allow read: if isSignedIn(); allow write: if hasRole(['Super Admin', 'Warehouse']); }
+    match /stockMovements/{id} { allow read: if isSignedIn(); allow write: if hasRole(['Super Admin', 'Warehouse']); }
+    match /spareRequests/{id} {
+      allow read: if isSignedIn();
+      allow write: if hasRole(['Super Admin', 'Warehouse', 'Service Center', 'Technician']);
+    }
+
+    // ---- Finance: money-moving collections, kept to fewer roles -------
+    match /estimates/{id} { allow read: if isSignedIn(); allow write: if hasRole(['Super Admin', 'Service Center']); }
+    match /invoices/{id} { allow read: if isSignedIn(); allow write: if hasRole(['Super Admin', 'Service Center']); }
+    match /payments/{id} { allow read: if isSignedIn(); allow write: if hasRole(['Super Admin', 'Service Center']); }
+    match /localPurchases/{id} {
+      allow read: if isSignedIn();
+      allow write: if hasRole(['Super Admin', 'Warehouse', 'Service Center', 'Technician']);
+    }
+
+    // ---- RMA & Replacement ----------------------------------------------
+    match /rma/{id} { allow read: if isSignedIn(); allow write: if hasRole(['Super Admin', 'Service Center']); }
+
+    // ---- Communication ---------------------------------------------------
+    match /templates/{id} { allow read: if isSignedIn(); allow write: if isSuperAdmin(); }
+    match /messages/{id} { allow read: if isSignedIn(); allow write: if hasRole(['Super Admin', 'Service Center']); }
+
+    // ---- Website Leads: written from the public site's own signed-in
+    // session (see the top-level note above re: tightening this later) --
+    match /websiteLeads/{id} { allow read: if isSignedIn(); allow create: if isSignedIn(); allow update, delete: if isSuperAdmin(); }
+
+    // ---- SLA & Escalation --------------------------------------------------
+    match /slaRules/{id} { allow read: if isSignedIn(); allow write: if isSuperAdmin(); }
+    match /escalations/{id} { allow read: if isSignedIn(); allow write: if hasRole(['Super Admin', 'Service Center']); }
+
+    // ---- Approvals: rules editable by Super Admin only; requests can be
+    // raised more broadly, but only decided by whoever can approve -------
+    match /approvalRules/{id} { allow read: if isSignedIn(); allow write: if isSuperAdmin(); }
+    match /approvals/{id} {
+      allow read: if isSignedIn();
+      allow create: if hasRole(['Super Admin', 'Service Center', 'Technician', 'Warehouse']);
+      allow update: if hasRole(['Super Admin']); // decide() — approve/reject
+    }
+  }
+}

@@ -1498,7 +1498,6 @@ route('/spare-parts', async () => {
   });
 });
 let CATEGORY_NAME_CACHE = {};
-db.categories.list().then(cats => { CATEGORY_NAME_CACHE = Object.fromEntries(cats.map(c => [c.id, c.name])); });
 
 // =======================================================================
 // WAREHOUSE STOCK (central)
@@ -3214,8 +3213,8 @@ function renderUsersList(users) {
 // =======================================================================
 // INIT
 // =======================================================================
-document.addEventListener('DOMContentLoaded', () => {
-  renderSidebar();
+document.addEventListener('DOMContentLoaded', async () => {
+  renderSidebar(); // safe before db.ready — reads only SESSION and static nav config, no db calls
 
   // Theme: default to system preference
   const root = document.documentElement;
@@ -3230,5 +3229,35 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('sidebar').classList.toggle('open');
   });
 
+  document.getElementById('signOutLink').addEventListener('click', async (e) => {
+    if (!window.MOCK_MODE) {
+      e.preventDefault();
+      await db.ready;
+      await db.auth.signOut();
+      location.href = 'login.html';
+    }
+    // In mock mode, the plain href="login.html" navigation already does the job.
+  });
+
+  // Everything below touches db — wait for bootstrap (mock mode resolves this
+  // immediately; live mode waits for Firestore to hydrate `_mock` first).
+  await db.ready;
+
+  // In live mode, URL params are a convenience for passing the just-signed-in
+  // profile from login.html to here — they're not real auth. Verify against
+  // Firebase's actual session instead, and use its profile as the source of
+  // truth if present. In mock mode this is a no-op (onReady() resolves null).
+  if (!window.MOCK_MODE) {
+    const liveUser = await db.auth.onReady();
+    if (liveUser) {
+      SESSION.uid = liveUser.id; SESSION.name = liveUser.name; SESSION.email = liveUser.email; SESSION.role = liveUser.role;
+      renderSidebar(); // re-render now that SESSION reflects the verified profile, not just the URL
+    } else {
+      location.href = 'login.html';
+      return;
+    }
+  }
+
+  db.categories.list().then(cats => { CATEGORY_NAME_CACHE = Object.fromEntries(cats.map(c => [c.id, c.name])); });
   render();
 });

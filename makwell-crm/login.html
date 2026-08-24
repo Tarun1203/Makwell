@@ -19,7 +19,7 @@
     <h1>Sign in</h1>
     <p class="sub">Internal operations, dealer, service and admin console.</p>
 
-    <div class="note" style="margin-bottom:20px;">
+    <div class="note" style="margin-bottom:20px;" id="modeNote">
       This build isn't connected to a live Firebase project yet — sign-in is simulated for Phase 1. Pick a role below to see that role's console.
     </div>
 
@@ -50,8 +50,16 @@
   </div>
 </div>
 
-<script src="assets/mock-db.js"></script>
+<script type="module" src="assets/mock-db.js"></script>
 <script>
+  window.addEventListener('DOMContentLoaded', async () => {
+    // window.MOCK_MODE is assigned by mock-db.js's module-level code, which
+    // (per module execution order) has already run by the time this fires.
+    if (window.MOCK_MODE === false) {
+      document.getElementById('modeNote').innerHTML = 'Connected to a live Firebase project. Sign in with a real account, or a new email + password to auto-provision one as Super Admin (see the comment at the top of <code>mock-db.js</code> before leaving this open to the public).';
+    }
+  });
+
   document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const emailEl = document.getElementById('email');
@@ -69,7 +77,8 @@
     submitBtn.disabled = true;
     submitBtn.textContent = 'Signing in…';
 
-    const user = await db.auth.signIn(emailEl.value.trim(), roleEl.value);
+    await db.ready;
+    const user = await db.auth.signIn(emailEl.value.trim(), passEl.value, roleEl.value);
     const params = new URLSearchParams({ uid: user.id, name: user.name, email: user.email, role: user.role });
     location.href = 'crm.html?' + params.toString();
   });
