@@ -40,6 +40,14 @@ service cloud.firestore {
       return isSignedIn() && myRole() in roles;
     }
 
+    // ---- Bootstrap marker: read by anyone signed in (to decide whether to
+    // hydrate from Firestore), written once by whoever's first-ever session
+    // triggers the initial seed. Not meant to be edited by hand afterward.
+    match /_meta/{id} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn();
+    }
+
     // ---- Users & Roles: only Super Admin manages accounts -------------
     match /users/{userId} {
       allow read: if isSignedIn();

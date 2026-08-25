@@ -16,55 +16,111 @@
       <img src="../assets/logo.jpg" alt="">
       <span>MakWell CRM</span>
     </div>
-    <h1>Sign in</h1>
-    <p class="sub">Internal operations, dealer, service and admin console.</p>
+    <h1 id="cardTitle">Sign in</h1>
+    <p class="sub" id="cardSub">Internal operations, dealer, service and admin console.</p>
 
-    <div class="note" style="margin-bottom:20px;" id="modeNote">
-      This build isn't connected to a live Firebase project yet — sign-in is simulated for Phase 1. Pick a role below to see that role's console.
-    </div>
+    <div class="note" style="margin-bottom:20px; display:none;" id="errorNote"></div>
 
+    <!-- SIGN IN -->
     <form id="loginForm" novalidate>
       <div class="field" data-field="email">
         <label for="email">Email <span class="req">*</span></label>
-        <input type="email" id="email" required placeholder="you@makwell.in" value="anita.rao@makwell.in">
+        <input type="email" id="email" required placeholder="you@makwell.in" autocomplete="username">
         <div class="error">Enter an email address.</div>
       </div>
       <div class="field" data-field="password">
         <label for="password">Password <span class="req">*</span></label>
-        <input type="password" id="password" required placeholder="••••••••" value="demo1234">
+        <input type="password" id="password" required placeholder="••••••••" autocomplete="current-password">
         <div class="error">Enter a password.</div>
       </div>
-      <div class="field" data-field="role">
-        <label for="role">Sign in as</label>
-        <select id="role">
+      <button type="submit" class="btn btn-primary btn-block" style="padding:12px; margin-top:6px;">Sign in</button>
+      <p style="text-align:center; font-size:12.5px; color:var(--text-mute); margin-top:16px;">
+        First time setting this up? <a href="#" id="showCreate" style="color:var(--accent-text); font-weight:600;">Create an account</a>
+      </p>
+    </form>
+
+    <!-- CREATE ACCOUNT (hidden until "Create an account" is clicked) -->
+    <form id="createForm" novalidate style="display:none;">
+      <div class="field" data-field="c_name">
+        <label for="c_name">Your name <span class="req">*</span></label>
+        <input type="text" id="c_name" required placeholder="Full name">
+        <div class="error">Enter your name.</div>
+      </div>
+      <div class="field" data-field="c_email">
+        <label for="c_email">Email <span class="req">*</span></label>
+        <input type="email" id="c_email" required placeholder="you@makwell.in" autocomplete="username">
+        <div class="error">Enter an email address.</div>
+      </div>
+      <div class="field" data-field="c_password">
+        <label for="c_password">Password <span class="req">*</span></label>
+        <input type="password" id="c_password" required placeholder="At least 6 characters" autocomplete="new-password">
+        <div class="error">Enter a password (6+ characters).</div>
+      </div>
+      <div class="field" data-field="c_role">
+        <label for="c_role">Role</label>
+        <select id="c_role">
           <option value="Super Admin">Super Admin</option>
           <option value="Warehouse">Warehouse</option>
           <option value="Service Center">Service Center</option>
           <option value="Technician">Technician</option>
           <option value="Dealer">Dealer</option>
         </select>
-        <div class="hint">Try known demo users: anita.rao (Super Admin), suresh.patil (Warehouse), ramesh.k (Service Center), vinod.naik (Technician), deepa.traders (Dealer) @makwell.in / @example.com</div>
+        <div class="hint">Setting this up for the first time? Choose Super Admin — you can add everyone else's accounts from inside the CRM afterward.</div>
       </div>
-      <button type="submit" class="btn btn-primary btn-block" style="padding:12px; margin-top:6px;">Sign in</button>
+      <button type="submit" class="btn btn-primary btn-block" style="padding:12px; margin-top:6px;">Create account</button>
+      <p style="text-align:center; font-size:12.5px; color:var(--text-mute); margin-top:16px;">
+        Already have an account? <a href="#" id="showLogin" style="color:var(--accent-text); font-weight:600;">Sign in instead</a>
+      </p>
     </form>
   </div>
 </div>
 
 <script type="module" src="../assets/mock-db.js"></script>
 <script>
-  window.addEventListener('DOMContentLoaded', async () => {
-    // window.MOCK_MODE is assigned by mock-db.js's module-level code, which
-    // (per module execution order) has already run by the time this fires.
-    if (window.MOCK_MODE === false) {
-      document.getElementById('modeNote').innerHTML = 'Connected to a live Firebase project. Sign in with a real account, or a new email + password to auto-provision one as Super Admin (see the comment at the top of <code>mock-db.js</code> before leaving this open to the public).';
-    }
+  const loginForm = document.getElementById('loginForm');
+  const createForm = document.getElementById('createForm');
+  const cardTitle = document.getElementById('cardTitle');
+  const cardSub = document.getElementById('cardSub');
+  const errorNote = document.getElementById('errorNote');
+
+  function showError(message) {
+    errorNote.textContent = message;
+    errorNote.style.cssText = 'margin-bottom:20px; display:block; border-color:var(--red-soft); background:var(--red-soft); color:var(--red);';
+  }
+  function clearError() {
+    errorNote.style.display = 'none';
+  }
+  function friendlyAuthError(err) {
+    const code = err && err.code;
+    if (code === 'auth/invalid-credential' || code === 'auth/wrong-password' || code === 'auth/user-not-found') return "Email or password didn't match an account.";
+    if (code === 'auth/email-already-in-use') return 'An account with that email already exists — sign in instead.';
+    if (code === 'auth/weak-password') return 'Password needs to be at least 6 characters.';
+    if (code === 'auth/invalid-email') return "That doesn't look like a valid email address.";
+    return (err && err.message) || 'Something went wrong — please try again.';
+  }
+
+  document.getElementById('showCreate').addEventListener('click', (e) => {
+    e.preventDefault();
+    clearError();
+    loginForm.style.display = 'none';
+    createForm.style.display = 'block';
+    cardTitle.textContent = 'Create an account';
+    cardSub.textContent = "For initial setup, or onboarding staff who don't have an account yet.";
+  });
+  document.getElementById('showLogin').addEventListener('click', (e) => {
+    e.preventDefault();
+    clearError();
+    createForm.style.display = 'none';
+    loginForm.style.display = 'block';
+    cardTitle.textContent = 'Sign in';
+    cardSub.textContent = 'Internal operations, dealer, service and admin console.';
   });
 
-  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    clearError();
     const emailEl = document.getElementById('email');
     const passEl = document.getElementById('password');
-    const roleEl = document.getElementById('role');
     let valid = true;
     [emailEl, passEl].forEach(el => {
       const wrap = el.closest('.field');
@@ -77,10 +133,48 @@
     submitBtn.disabled = true;
     submitBtn.textContent = 'Signing in…';
 
-    await db.ready;
-    const user = await db.auth.signIn(emailEl.value.trim(), passEl.value, roleEl.value);
-    const params = new URLSearchParams({ uid: user.id, name: user.name, email: user.email, role: user.role });
-    location.href = 'crm.html?' + params.toString();
+    try {
+      await db.ready;
+      await db.auth.signIn(emailEl.value.trim(), passEl.value);
+      location.href = 'crm.html';
+    } catch (err) {
+      showError(friendlyAuthError(err));
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Sign in';
+    }
+  });
+
+  createForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearError();
+    const nameEl = document.getElementById('c_name');
+    const emailEl = document.getElementById('c_email');
+    const passEl = document.getElementById('c_password');
+    const roleEl = document.getElementById('c_role');
+    let valid = true;
+    [nameEl, emailEl].forEach(el => {
+      const wrap = el.closest('.field');
+      if (!el.value.trim()) { valid = false; wrap.classList.add('has-error'); }
+      else wrap.classList.remove('has-error');
+    });
+    const passWrap = passEl.closest('.field');
+    if (!passEl.value || passEl.value.length < 6) { valid = false; passWrap.classList.add('has-error'); }
+    else passWrap.classList.remove('has-error');
+    if (!valid) return;
+
+    const submitBtn = e.target.querySelector('button[type=submit]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Creating account…';
+
+    try {
+      await db.ready;
+      await db.auth.createAccount(emailEl.value.trim(), passEl.value, roleEl.value, nameEl.value.trim());
+      location.href = 'crm.html';
+    } catch (err) {
+      showError(friendlyAuthError(err));
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Create account';
+    }
   });
 </script>
 </body>

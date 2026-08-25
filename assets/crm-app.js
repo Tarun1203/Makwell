@@ -2,17 +2,10 @@
    MAKWELL CRM — app shell: session, routing, sidebar, and Phase 1 screens
    ======================================================================= */
 
-// ---------- Session (from login.html via query params; no storage APIs used) ----------
-const params = new URLSearchParams(location.search);
-const SESSION = {
-  uid: params.get('uid'),
-  name: params.get('name'),
-  email: params.get('email'),
-  role: params.get('role')
-};
-if (!SESSION.uid || !SESSION.role) {
-  location.href = 'login.html';
-}
+// ---------- Session ----------
+// Populated in the DOMContentLoaded handler below from db.auth.onReady() —
+// the actual verified Firebase session, not anything guessable from the URL.
+const SESSION = { uid: null, name: null, email: null, role: null };
 
 // ---------- Icons ----------
 const ICONS = {
@@ -123,7 +116,7 @@ const NAV_BY_ROLE = {
 
 function renderSidebar() {
   const nav = NAV_BY_ROLE[SESSION.role] || NAV_BY_ROLE['Dealer'];
-  document.getElementById('sidebarRole').textContent = SESSION.role + ' console';
+  document.getElementById('sidebarRole').textContent = SESSION.role ? SESSION.role + ' console' : 'Loading…';
   document.getElementById('sidebarNav').innerHTML = nav.map(item => {
     if (item.disabled) {
       return `<a class="nav-link disabled" title="Coming in ${item.note}">${ICONS[item.icon]}<span>${item.label}</span><span style="margin-left:auto; font-size:10px;">${item.note}</span></a>`;
@@ -3230,32 +3223,25 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   document.getElementById('signOutLink').addEventListener('click', async (e) => {
-    if (!window.MOCK_MODE) {
-      e.preventDefault();
-      await db.ready;
-      await db.auth.signOut();
-      location.href = 'login.html';
-    }
-    // In mock mode, the plain href="login.html" navigation already does the job.
+    e.preventDefault();
+    await db.ready;
+    await db.auth.signOut();
+    location.href = 'login.html';
   });
 
-  // Everything below touches db — wait for bootstrap (mock mode resolves this
-  // immediately; live mode waits for Firestore to hydrate `_mock` first).
+  // Everything below touches db — wait for bootstrap (resolves once Firebase
+  // confirms whether there's a session, and if so, hydrates `_mock`).
   await db.ready;
 
-  // In live mode, URL params are a convenience for passing the just-signed-in
-  // profile from login.html to here — they're not real auth. Verify against
-  // Firebase's actual session instead, and use its profile as the source of
-  // truth if present. In mock mode this is a no-op (onReady() resolves null).
-  if (!window.MOCK_MODE) {
-    const liveUser = await db.auth.onReady();
-    if (liveUser) {
-      SESSION.uid = liveUser.id; SESSION.name = liveUser.name; SESSION.email = liveUser.email; SESSION.role = liveUser.role;
-      renderSidebar(); // re-render now that SESSION reflects the verified profile, not just the URL
-    } else {
-      location.href = 'login.html';
-      return;
-    }
+  // The only source of truth for who's signed in — never anything from the
+  // URL. If there's no real Firebase session, there's nothing to show.
+  const liveUser = await db.auth.onReady();
+  if (liveUser) {
+    SESSION.uid = liveUser.id; SESSION.name = liveUser.name; SESSION.email = liveUser.email; SESSION.role = liveUser.role;
+    renderSidebar(); // re-render now that SESSION reflects the verified profile
+  } else {
+    location.href = 'login.html';
+    return;
   }
 
   db.categories.list().then(cats => { CATEGORY_NAME_CACHE = Object.fromEntries(cats.map(c => [c.id, c.name])); });
