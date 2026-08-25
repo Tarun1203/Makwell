@@ -195,7 +195,7 @@ window.addEventListener('hashchange', render);
 // ---------- Shared UI bits ----------
 function pill(text, tone) { return `<span class="pill pill-${tone}">${text}</span>`; }
 function statusPill(status) {
-  const map = { Active: 'green', Inactive: 'gray', 'In Stock': 'blue', Sold: 'amber', Registered: 'green' };
+  const map = { Active: 'green', Inactive: 'gray', 'In Stock': 'blue', Sold: 'amber', Registered: 'green', 'Pending Approval': 'amber', Rejected: 'red' };
   return pill(status, map[status] || 'gray');
 }
 function fmtDate(d) { return d || '—'; }
@@ -3050,7 +3050,7 @@ async function renderApprovalsTab(tab) {
               <h3 class="cell-mono">${a.approvalNumber}</h3>
               <p class="hint" style="margin-top:4px;">${a.entityType} · requested by ${a.requestedBy} on ${a.createdAt}</p>
             </div>
-            <strong style="font-family:'Archivo Expanded'; font-size:18px;">${money(a.amount)}</strong>
+            ${a.entityType === 'New User Account' ? pill('New Account', 'blue') : `<strong style="font-family:'Archivo Expanded'; font-size:18px;">${money(a.amount)}</strong>`}
           </div>
           <p style="font-size:13.5px; color:var(--text-soft);">${a.description}</p>
           ${a.meta && a.meta.method ? `<p class="hint" style="margin-top:6px;">Method: ${a.meta.method}</p>` : ''}
@@ -3076,7 +3076,7 @@ async function renderApprovalsTab(tab) {
               <tr>
                 <td class="cell-mono cell-strong">${a.approvalNumber}</td>
                 <td><span class="role-badge">${a.entityType}</span></td>
-                <td class="cell-mono">${money(a.amount)}</td>
+                <td class="cell-mono">${a.entityType === 'New User Account' ? '—' : money(a.amount)}</td>
                 <td>${a.requestedBy}</td>
                 <td>${pill(a.status, a.status === 'Approved' ? 'green' : 'red')}</td>
                 <td>${a.decidedBy} <span class="hint">(${a.decidedAt})</span></td>

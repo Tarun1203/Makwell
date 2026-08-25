@@ -119,7 +119,11 @@ service cloud.firestore {
     match /approvalRules/{id} { allow read: if isSignedIn(); allow write: if isSuperAdmin(); }
     match /approvals/{id} {
       allow read: if isSignedIn();
-      allow create: if hasRole(['Super Admin', 'Service Center', 'Technician', 'Warehouse']);
+      // Filing a request is low-risk on its own — nothing happens until a
+      // Super Admin decides it (see allow update below), so any signed-in
+      // user/role may create one. This also covers new-account requests,
+      // which come from every role including Dealer.
+      allow create: if isSignedIn();
       allow update: if hasRole(['Super Admin']); // decide() — approve/reject
     }
   }

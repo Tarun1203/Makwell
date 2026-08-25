@@ -181,7 +181,8 @@ const _mock = {
 
   approvalRules: [
     { entityType: 'RMA Refund', thresholdAmount: 2000, active: true },
-    { entityType: 'Local Purchase', thresholdAmount: 500, active: true }
+    { entityType: 'Local Purchase', thresholdAmount: 500, active: true },
+    { entityType: 'New User Account', thresholdAmount: 0, active: true } // threshold 0 + amount 0 → always requires approval, reusing the same mechanism
   ],
 
   approvals: []
@@ -278,21 +279,58 @@ const db = {
     // Sign in with an existing account only. Throws (doesn't silently
     // create anything) if the credentials don't match a real account —
     // use createAccount() below for actually provisioning a new one.
+    // Also blocks anyone whose account isn't Active yet — e.g. still
+    // waiting on the approval this same createAccount() call requested.
     async signIn(email, password) {
       const cred = await signInWithEmailAndPassword(fsAuth, email, password);
       const ref = doc(fsDb, 'users', cred.user.uid);
       const snap = await getDoc(ref);
-      return db.auth._profileFor(cred.user.uid, email, snap);
+      const profile = db.auth._profileFor(cred.user.uid, email, snap);
+      if (profile.status !== 'Active') {
+        await fbSignOut(fsAuth); // don't leave them signed in but blocked — force a clean retry later
+        const err = new Error(profile.status === 'Pending Approval'
+          ? 'Your account is waiting on approval from a Super Admin.'
+          : 'Your account is not active. Contact your Super Admin.');
+        err.code = profile.status === 'Pending Approval' ? 'app/pending-approval' : 'app/account-inactive';
+        throw err;
+      }
+      return profile;
     },
 
     // Explicit, deliberate account creation — never triggered automatically
-    // by a failed sign-in. Intended for initial setup (creating your first
-    // Super Admin) and for staff you're onboarding by hand; see the note in
-    // login.html for why this shouldn't stay open to the public afterward.
+    // by a failed sign-in. The very first account ever created on a fresh
+    // project auto-activates as Super Admin (nobody exists yet to approve
+    // it). Every account after that goes to Pending Approval and shows up
+    // in Approvals → Queue for a Super Admin to decide on — see
+    // db.approvals.decide()'s "New User Account" branch below.
     async createAccount(email, password, role, name) {
       const cred = await createUserWithEmailAndPassword(fsAuth, email, password);
-      const profile = { name: name || email.split('@')[0], email, role: role || 'Dealer', status: 'Active', createdAt: new Date().toISOString().slice(0, 10) };
+
+      // Check Firestore directly, not the local `_mock` cache — bootstrap
+      // only hydrates that cache once someone's already authenticated, and
+      // this is the exact moment that becomes true for a first-time signup,
+      // so the cache can't be trusted yet to say whether anyone exists.
+      const existingUsersSnap = await getDocs(collection(fsDb, 'users'));
+      const isFirstEver = existingUsersSnap.empty;
+      const needsApproval = !isFirstEver && db.approvals.requiresApproval('New User Account', 0);
+
+      const profile = {
+        name: name || email.split('@')[0], email,
+        role: isFirstEver ? 'Super Admin' : (role || 'Dealer'),
+        status: needsApproval ? 'Pending Approval' : 'Active',
+        createdAt: new Date().toISOString().slice(0, 10)
+      };
       await setDoc(doc(fsDb, 'users', cred.user.uid), profile);
+      _mock.users.push({ id: cred.user.uid, ...profile });
+
+      if (needsApproval) {
+        await db.approvals.request({
+          entityType: 'New User Account', entityId: cred.user.uid, amount: 0,
+          description: `${profile.name} (${email}) requesting ${profile.role} access`,
+          requestedBy: profile.name
+        });
+        await fbSignOut(fsAuth); // they have a real Auth credential now, but no working session until approved
+      }
       return { id: cred.user.uid, ...profile };
     },
 
@@ -301,14 +339,16 @@ const db = {
     },
 
     // Resolves with the current Firebase user's CRM profile, or null if
-    // signed out. This is the single source of truth for who's signed in —
-    // crm.html never trusts anything else (not URL params, not local state).
+    // signed out (or not yet Active — same effect from the app's point of
+    // view). This is the single source of truth for who's signed in —
+    // crm.html never trusts anything else.
     onReady() {
       return new Promise((resolve) => {
         onAuthStateChanged(fsAuth, async (user) => {
           if (!user) { resolve(null); return; }
           const snap = await getDoc(doc(fsDb, 'users', user.uid));
-          resolve(db.auth._profileFor(user.uid, user.email, snap));
+          const profile = db.auth._profileFor(user.uid, user.email, snap);
+          resolve(profile.status === 'Active' ? profile : null);
         });
       });
     }
@@ -1082,10 +1122,14 @@ const db = {
           await db.rma.resolveRefund(a.entityId, a.amount, a.meta.method || 'Bank Transfer');
         } else if (a.entityType === 'Local Purchase') {
           await db.localPurchases.setStatus(a.entityId, 'Approved');
+        } else if (a.entityType === 'New User Account') {
+          await db.users.setStatus(a.entityId, 'Active');
         }
       } else if (decision === 'Rejected') {
         if (a.entityType === 'Local Purchase') {
           await db.localPurchases.setStatus(a.entityId, 'Rejected');
+        } else if (a.entityType === 'New User Account') {
+          await db.users.setStatus(a.entityId, 'Rejected'); // their Auth credential still exists, but signIn() blocks non-Active accounts
         }
         // RMA Refund rejection leaves the RMA at 'Inspected' so the service team can choose a different resolution.
       }

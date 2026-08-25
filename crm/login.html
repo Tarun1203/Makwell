@@ -92,6 +92,8 @@
   }
   function friendlyAuthError(err) {
     const code = err && err.code;
+    if (code === 'app/pending-approval') return 'Your account is waiting on approval from a Super Admin — check back once they\'ve reviewed it.';
+    if (code === 'app/account-inactive') return 'Your account is not active. Contact your Super Admin.';
     if (code === 'auth/invalid-credential' || code === 'auth/wrong-password' || code === 'auth/user-not-found') return "Email or password didn't match an account.";
     if (code === 'auth/email-already-in-use') return 'An account with that email already exists — sign in instead.';
     if (code === 'auth/weak-password') return 'Password needs to be at least 6 characters.';
@@ -168,8 +170,16 @@
 
     try {
       await db.ready;
-      await db.auth.createAccount(emailEl.value.trim(), passEl.value, roleEl.value, nameEl.value.trim());
-      location.href = 'crm.html';
+      const user = await db.auth.createAccount(emailEl.value.trim(), passEl.value, roleEl.value, nameEl.value.trim());
+      if (user.status === 'Active') {
+        location.href = 'crm.html';
+      } else {
+        createForm.style.display = 'none';
+        errorNote.style.cssText = 'margin-bottom:20px; display:block; border-color:var(--border-soft); background:var(--accent-soft); color:var(--accent-text);';
+        errorNote.textContent = `Account created for ${user.email}. It's now waiting on approval from a Super Admin — you'll be able to sign in once it's approved.`;
+        cardTitle.textContent = 'Almost there';
+        cardSub.textContent = '';
+      }
     } catch (err) {
       showError(friendlyAuthError(err));
       submitBtn.disabled = false;
