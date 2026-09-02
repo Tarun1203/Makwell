@@ -946,6 +946,7 @@ function openAddRequestModal(ctx) {
       type: document.getElementById('rf_type').value,
       productId: document.getElementById('rf_product').value,
       district: document.getElementById('rf_district').value,
+      source: SESSION.role,
       complaint: document.getElementById('rf_complaint').value.trim()
     });
     closeModal();
@@ -2572,7 +2573,7 @@ async function renderRmaTab(tab, r, ctx) {
       document.getElementById('btnEscalate').addEventListener('click', async () => {
         const newSr = await db.service.add({
           customerId: r.customerId, productId: r.productId, type: 'Out-of-Warranty',
-          district: (await db.customers.get(r.customerId)).district || '',
+          district: (await db.customers.get(r.customerId)).district || '', source: SESSION.role,
           complaint: `Escalated from RMA ${r.rmaNumber}: ${r.inspection.findings || r.reason}`
         });
         await db.rma.resolveEscalation(r.id, newSr.id);
@@ -2888,18 +2889,19 @@ route('/website-leads', async () => {
     <div class="note" style="margin-bottom:18px;">Service Request submissions automatically create a real Service Hub record and trigger the "Request Received" notification — no manual re-entry.</div>
     <div class="table-wrap">
       <table class="data">
-        <thead><tr><th>Date</th><th>Name</th><th>Phone</th><th>Reason</th><th>Customer</th><th>Linked Job</th><th>Message</th></tr></thead>
+        <thead><tr><th>Date</th><th>Reference No.</th><th>Name</th><th>Phone</th><th>Reason</th><th>Customer</th><th>Linked Job</th><th>Message</th></tr></thead>
         <tbody>
           ${leads.map(l => `
             <tr>
               <td class="cell-mono">${l.createdAt}</td>
+              <td class="cell-mono cell-strong">${l.leadNumber || '—'}</td>
               <td class="cell-strong">${l.name}</td>
               <td class="cell-mono">${l.phone}</td>
               <td><span class="role-badge">${l.reason}</span></td>
               <td>${custMap[l.customerId] ? `<a href="#/customers/${l.customerId}">${custMap[l.customerId].name}</a>` : '—'}</td>
               <td>${l.serviceRequestId && srMap[l.serviceRequestId] ? `<a href="#/service/${l.serviceRequestId}" class="cell-mono">${srMap[l.serviceRequestId].requestNumber}</a>` : '—'}</td>
               <td style="max-width:280px; font-size:12.5px; color:var(--text-soft);">${l.message || '—'}</td>
-            </tr>`).join('') || `<tr><td colspan="7" class="table-empty">No website submissions yet.</td></tr>`}
+            </tr>`).join('') || `<tr><td colspan="8" class="table-empty">No website submissions yet.</td></tr>`}
         </tbody>
       </table>
     </div>

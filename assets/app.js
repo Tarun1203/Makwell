@@ -142,9 +142,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       const shell = document.getElementById('contactFormShell');
       let extra = '';
+      let refNumber = '';
       if (lead.serviceRequestId) {
         const sr = await db.service.get(lead.serviceRequestId);
-        extra = `<div class="id-pill" style="display:inline-block; margin-top:14px; background:var(--navy); color:var(--on-navy); font-family:'IBM Plex Mono'; font-size:15px; padding:10px 18px; border-radius:8px;">${sr.requestNumber}</div><p style="color:var(--text-soft); font-size:12.5px; margin-top:10px;">Save this reference — our team will reach out shortly.</p>`;
+        refNumber = sr.requestNumber;
+      } else {
+        refNumber = lead.leadNumber;
+      }
+      if (refNumber) {
+        extra = `<div class="id-pill" style="display:inline-block; margin-top:14px; background:var(--navy); color:var(--on-navy); font-family:'IBM Plex Mono'; font-size:15px; padding:10px 18px; border-radius:8px;">${refNumber}</div><p style="color:var(--text-soft); font-size:12.5px; margin-top:10px;">Save this reference — our team will reach out shortly.</p>`;
       }
       shell.innerHTML = `
         <div class="success-box">

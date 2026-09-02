@@ -257,6 +257,22 @@ const KARNATAKA_DISTRICTS = [
   'Kalaburagi', 'Bidar', 'Raichur', 'Koppal', 'Yadgir', 'Ballari', 'Vijayanagara'
 ];
 
+// 3-letter code per district, for embedding in service ticket numbers.
+// Verified unique across all 31 — see the district-code audit this was
+// generated from if this list ever needs to change.
+const DISTRICT_CODES = {
+  'Bengaluru Urban': 'BLU', 'Bengaluru North': 'BLN', 'Bengaluru South': 'BLS', 'Chikkaballapur': 'CKB', 'Chitradurga': 'CTD', 'Davanagere': 'DVG', 'Kolar': 'KLR', 'Shivamogga': 'SHV', 'Tumakuru': 'TMK',
+  'Mysuru': 'MYS', 'Mandya': 'MDY', 'Hassan': 'HSN', 'Kodagu': 'KDG', 'Chamarajanagar': 'CMN', 'Chikkamagaluru': 'CMG', 'Dakshina Kannada': 'DKK', 'Udupi': 'UDP',
+  'Belagavi': 'BLG', 'Bagalkot': 'BGK', 'Vijayapura': 'VJP', 'Dharwad': 'DWD', 'Gadag': 'GDG', 'Haveri': 'HVR', 'Uttara Kannada': 'UTK',
+  'Kalaburagi': 'KLB', 'Bidar': 'BDR', 'Raichur': 'RCH', 'Koppal': 'KPL', 'Yadgir': 'YDG', 'Ballari': 'BLR', 'Vijayanagara': 'VJN'
+};
+
+// Who/what originated a service request — CRM roles plus the public website.
+const SOURCE_CODES = {
+  'Website': 'WEB', 'Dealer': 'DLR', 'Technician': 'TCH',
+  'Service Center': 'SVC', 'Warehouse': 'WHS', 'Super Admin': 'ADM'
+};
+
 // Was `${prefix}${_seq++}` starting from 100 — that counter only lived in
 // this page load's memory, so it reset to 100 on every reload. Two
 // different visitors (or the same visitor across two page loads) would
@@ -286,10 +302,30 @@ function _ticketNumber(code) {
   // millisecond resolution, so any burst of submissions landing in the same
   // millisecond (a stress test, or genuinely concurrent real-world traffic)
   // would collide if the suffix leaned on the timestamp for its entropy.
-  // 6 random base-36 characters ≈ 2.18 billion combinations, more than
-  // enough for this app's realistic volume.
-  const suffix = Math.random().toString(36).slice(2, 8).toUpperCase();
+  // 8 random base-36 characters ≈ 2.8 trillion combinations. (6 characters
+  // was tried first and measurably collided under stress-testing at 100k
+  // draws — expected by the birthday-paradox math, not a fluke — so this
+  // has real headroom instead of just enough to pass one test run.)
+  const suffix = Math.random().toString(36).slice(2, 10).toUpperCase();
   return `PE-KA-${code}-${yy}${mm}${dd}-${suffix}`;
+}
+
+// Service requests specifically carry a district (for routing) and a clear
+// origin (who/what created them), so their number encodes both — more
+// useful for a service team scanning a list than a bare random code.
+// Format: PE-KA-{type}-{YYMMDD}-{district}{random}{source}, e.g.
+// PE-KA-SR-260902-DWDK86OQ52DWEB. The random segment is still 8 characters
+// even though it's now sandwiched between two 3-letter codes instead of
+// standing alone — shortening it would reintroduce the exact collision
+// risk found and fixed just before this reordering (a 4-character version
+// measurably collided at 100k draws in testing).
+function _serviceTicketNumber(type, district, source) {
+  const d = new Date();
+  const yy = String(d.getFullYear()).slice(2), mm = String(d.getMonth() + 1).padStart(2, '0'), dd = String(d.getDate()).padStart(2, '0');
+  const districtCode = DISTRICT_CODES[district] || 'XXX';
+  const sourceCode = SOURCE_CODES[source] || 'UNK';
+  const suffix = Math.random().toString(36).slice(2, 10).toUpperCase();
+  return `PE-KA-${type}-${yy}${mm}${dd}-${districtCode}${suffix}${sourceCode}`;
 }
 const _delay = (v) => new Promise((res) => setTimeout(() => res(v), 120)); // simulate network latency
 
@@ -538,7 +574,7 @@ const db = {
     async add(request) {
       const type = request.type || 'Service';
       const code = SERVICE_TYPE_CODES[type] || 'SR';
-      const requestNumber = _ticketNumber(code);
+      const requestNumber = _serviceTicketNumber(code, request.district || '', request.source || '');
       const today = new Date();
       const rec = {
         id: _id('sr'), requestNumber, type,
@@ -1031,14 +1067,15 @@ const db = {
         // a missing product gracefully (they show "—" instead of a name).
         const sr = await db.service.add({
           customerId: customer.id, type: 'Service', productId: productId || '',
-          district: district || customer.district || '',
+          district: district || customer.district || '', source: 'Website',
           complaint: message || 'Submitted via website contact form.'
         });
         serviceRequestId = sr.id;
       }
 
       const rec = {
-        id: _id('lead'), name, phone, reason, categoryId: categoryId || '', productId: productId || '',
+        id: _id('lead'), leadNumber: _ticketNumber(reason === 'Dealer / Partner Enquiry' ? 'DLR' : 'ENQ'),
+        name, phone, reason, categoryId: categoryId || '', productId: productId || '',
         district: district || '', message: message || '',
         customerId: customer.id, serviceRequestId,
         createdAt: new Date().toISOString().slice(0, 10)
