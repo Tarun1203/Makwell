@@ -92,6 +92,7 @@
   }
   function friendlyAuthError(err) {
     const code = err && err.code;
+    if (code === 'app/no-profile') return 'This account has no CRM profile — use "Create an account" instead, or contact your Super Admin.';
     if (code === 'app/pending-approval') return 'Your account is waiting on approval from a Super Admin — check back once they\'ve reviewed it.';
     if (code === 'app/account-inactive') return 'Your account is not active. Contact your Super Admin.';
     if (code === 'auth/invalid-credential' || code === 'auth/wrong-password' || code === 'auth/user-not-found') return "Email or password didn't match an account.";

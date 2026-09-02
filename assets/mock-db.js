@@ -303,9 +303,16 @@ const db = {
 
   // ---- Auth --------------------------------------------------------------
   auth: {
-    _profileFor(uid, email, snap, fallbackRole) {
-      if (snap.exists()) return { id: uid, ...snap.data() };
-      return { id: uid, name: email.split('@')[0], email, role: fallbackRole || 'Dealer', status: 'Active' };
+    // No profile document means no valid CRM identity — full stop. This
+    // used to fall back to a fabricated {role:'Dealer', status:'Active'}
+    // profile, which made sense back when any authenticated account was
+    // assumed to deserve some access. Now that accounts only ever come
+    // from createAccount() below (which always writes a real profile in
+    // the same breath as creating the Auth credential), a missing profile
+    // means something went wrong — an interrupted signup, an account
+    // created some other way — and should never silently grant access.
+    _profileFor(uid, email, snap) {
+      return snap.exists() ? { id: uid, ...snap.data() } : null;
     },
 
     // Sign in with an existing account only. Throws (doesn't silently
@@ -318,12 +325,14 @@ const db = {
       const ref = doc(fsDb, 'users', cred.user.uid);
       const snap = await getDoc(ref);
       const profile = db.auth._profileFor(cred.user.uid, email, snap);
-      if (profile.status !== 'Active') {
+      if (!profile || profile.status !== 'Active') {
         await fbSignOut(fsAuth); // don't leave them signed in but blocked — force a clean retry later
-        const err = new Error(profile.status === 'Pending Approval'
-          ? 'Your account is waiting on approval from a Super Admin.'
-          : 'Your account is not active. Contact your Super Admin.');
-        err.code = profile.status === 'Pending Approval' ? 'app/pending-approval' : 'app/account-inactive';
+        const err = new Error(!profile
+          ? 'This account has no CRM profile. Use "Create an account" instead, or contact your Super Admin.'
+          : (profile.status === 'Pending Approval'
+            ? 'Your account is waiting on approval from a Super Admin.'
+            : 'Your account is not active. Contact your Super Admin.'));
+        err.code = !profile ? 'app/no-profile' : (profile.status === 'Pending Approval' ? 'app/pending-approval' : 'app/account-inactive');
         throw err;
       }
       return profile;
@@ -380,7 +389,7 @@ const db = {
           if (!user) { resolve(null); return; }
           const snap = await getDoc(doc(fsDb, 'users', user.uid));
           const profile = db.auth._profileFor(user.uid, user.email, snap);
-          resolve(profile.status === 'Active' ? profile : null);
+          resolve(profile && profile.status === 'Active' ? profile : null);
         });
       });
     }
