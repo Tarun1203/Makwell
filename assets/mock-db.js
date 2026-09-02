@@ -257,8 +257,40 @@ const KARNATAKA_DISTRICTS = [
   'Kalaburagi', 'Bidar', 'Raichur', 'Koppal', 'Yadgir', 'Ballari', 'Vijayanagara'
 ];
 
-let _seq = 100; // mock id counter
-const _id = (prefix) => `${prefix}${_seq++}`;
+// Was `${prefix}${_seq++}` starting from 100 — that counter only lived in
+// this page load's memory, so it reset to 100 on every reload. Two
+// different visitors (or the same visitor across two page loads) would
+// both generate e.g. "lead100", and the second write would silently
+// OVERWRITE the first in Firestore, since setDoc() replaces whatever's at
+// that document id. Timestamp + random suffix is unique across sessions,
+// visitors, and devices without needing to read any existing data first.
+const _id = (prefix) => `${prefix}${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`;
+
+// Ticket-style numbers (request/invoice/estimate/RMA/etc). Previously these
+// counted "how many of this type already exist today" via _mock and used
+// that count as a sequential suffix (0001, 0002, ...) — which silently
+// breaks in two ways: (1) an anonymous website visitor can't read existing
+// records at all (correctly — the security rules don't allow it), so the
+// count always came back 0 and every visitor that day got the same
+// "...-0001"; and (2) even for signed-in users, counting-then-writing isn't
+// atomic, so two people submitting at the same moment could both compute
+// the same count and collide. A short collision-resistant suffix needs no
+// read at all, so it works identically for anonymous and signed-in writers
+// and can't race. Trade-off: numbers no longer read as a clean daily
+// sequence (0001, 0002...) — they're still unique and still sort roughly
+// by submission time, just not perfectly sequential-looking.
+function _ticketNumber(code) {
+  const d = new Date();
+  const yy = String(d.getFullYear()).slice(2), mm = String(d.getMonth() + 1).padStart(2, '0'), dd = String(d.getDate()).padStart(2, '0');
+  // Fully random suffix, not timestamp-derived — Date.now() only has
+  // millisecond resolution, so any burst of submissions landing in the same
+  // millisecond (a stress test, or genuinely concurrent real-world traffic)
+  // would collide if the suffix leaned on the timestamp for its entropy.
+  // 6 random base-36 characters ≈ 2.18 billion combinations, more than
+  // enough for this app's realistic volume.
+  const suffix = Math.random().toString(36).slice(2, 8).toUpperCase();
+  return `PE-KA-${code}-${yy}${mm}${dd}-${suffix}`;
+}
 const _delay = (v) => new Promise((res) => setTimeout(() => res(v), 120)); // simulate network latency
 
 // -----------------------------------------------------------------------
@@ -497,10 +529,8 @@ const db = {
     async add(request) {
       const type = request.type || 'Service';
       const code = SERVICE_TYPE_CODES[type] || 'SR';
+      const requestNumber = _ticketNumber(code);
       const today = new Date();
-      const yy = String(today.getFullYear()).slice(2), mm = String(today.getMonth() + 1).padStart(2, '0'), dd = String(today.getDate()).padStart(2, '0');
-      const seqToday = _mock.serviceRequests.filter(r => r.requestNumber.includes(`-${yy}${mm}${dd}-`)).length + 1;
-      const requestNumber = `PE-KA-${code}-${yy}${mm}${dd}-${String(seqToday).padStart(4, '0')}`;
       const rec = {
         id: _id('sr'), requestNumber, type,
         centerId: '', technicianId: '', status: 'Request Received',
@@ -629,9 +659,7 @@ const db = {
     async listByRequester(type, id) { return _delay(_mock.spareRequests.filter(r => r.requestedByType === type && r.requestedById === id)); },
     async add(req) {
       const today = new Date();
-      const yy = String(today.getFullYear()).slice(2), mm = String(today.getMonth() + 1).padStart(2, '0'), dd = String(today.getDate()).padStart(2, '0');
-      const seqToday = _mock.spareRequests.filter(r => r.requestNumber.includes(`-${yy}${mm}${dd}-`)).length + 1;
-      const requestNumber = `PE-KA-SPR-${yy}${mm}${dd}-${String(seqToday).padStart(4, '0')}`;
+      const requestNumber = _ticketNumber('SPR');
       const rec = { id: _id('req'), requestNumber, status: 'Requested', createdAt: today.toISOString().slice(0, 10), updatedAt: today.toISOString().slice(0, 10), ...req };
       _mock.spareRequests.push(rec);
       await _persistSet('spareRequests', rec.id, rec);
@@ -670,10 +698,8 @@ const db = {
     async listByServiceRequest(srId) { return _delay(_mock.estimates.filter(e => e.serviceRequestId === srId)); },
     async add({ serviceRequestId, customerId, items, laborCharge }) {
       const today = new Date();
-      const yy = String(today.getFullYear()).slice(2), mm = String(today.getMonth() + 1).padStart(2, '0'), dd = String(today.getDate()).padStart(2, '0');
-      const seqToday = _mock.estimates.filter(e => e.estimateNumber.includes(`-${yy}${mm}${dd}-`)).length + 1;
       const rec = {
-        id: _id('est'), estimateNumber: `PE-KA-EST-${yy}${mm}${dd}-${String(seqToday).padStart(4, '0')}`,
+        id: _id('est'), estimateNumber: _ticketNumber('EST'),
         serviceRequestId: serviceRequestId || '', customerId, items, laborCharge: laborCharge || 0,
         status: 'Draft', createdAt: today.toISOString().slice(0, 10), updatedAt: today.toISOString().slice(0, 10)
       };
@@ -695,10 +721,8 @@ const db = {
     async listByServiceRequest(srId) { return _delay(_mock.invoices.filter(i => i.serviceRequestId === srId)); },
     async add({ serviceRequestId, estimateId, customerId, items, laborCharge }) {
       const today = new Date();
-      const yy = String(today.getFullYear()).slice(2), mm = String(today.getMonth() + 1).padStart(2, '0'), dd = String(today.getDate()).padStart(2, '0');
-      const seqToday = _mock.invoices.filter(i => i.invoiceNumber.includes(`-${yy}${mm}${dd}-`)).length + 1;
       const rec = {
-        id: _id('inv'), invoiceNumber: `PE-KA-INV-${yy}${mm}${dd}-${String(seqToday).padStart(4, '0')}`,
+        id: _id('inv'), invoiceNumber: _ticketNumber('INV'),
         serviceRequestId: serviceRequestId || '', estimateId: estimateId || '', customerId, items, laborCharge: laborCharge || 0,
         amountPaid: 0, status: 'Unpaid', createdAt: today.toISOString().slice(0, 10)
       };
@@ -741,10 +765,8 @@ const db = {
     async listByRequester(type, id) { return _delay(_mock.localPurchases.filter(l => l.purchasedByType === type && l.purchasedById === id)); },
     async add({ serviceRequestId, purchasedByType, purchasedById, partDescription, amount, reason }) {
       const today = new Date();
-      const yy = String(today.getFullYear()).slice(2), mm = String(today.getMonth() + 1).padStart(2, '0'), dd = String(today.getDate()).padStart(2, '0');
-      const seqToday = _mock.localPurchases.filter(l => l.requestNumber.includes(`-${yy}${mm}${dd}-`)).length + 1;
       const rec = {
-        id: _id('lp'), requestNumber: `PE-KA-LP-${yy}${mm}${dd}-${String(seqToday).padStart(4, '0')}`,
+        id: _id('lp'), requestNumber: _ticketNumber('LP'),
         serviceRequestId: serviceRequestId || '', purchasedByType, purchasedById, partDescription, amount, reason: reason || '',
         status: 'Requested', createdAt: today.toISOString().slice(0, 10), updatedAt: today.toISOString().slice(0, 10)
       };
@@ -766,10 +788,8 @@ const db = {
     async listByCustomer(customerId) { return _delay(_mock.rma.filter(r => r.customerId === customerId)); },
     async add({ serviceRequestId, customerId, productId, serialId, reason }) {
       const today = new Date();
-      const yy = String(today.getFullYear()).slice(2), mm = String(today.getMonth() + 1).padStart(2, '0'), dd = String(today.getDate()).padStart(2, '0');
-      const seqToday = _mock.rma.filter(r => r.rmaNumber.includes(`-${yy}${mm}${dd}-`)).length + 1;
       const rec = {
-        id: _id('rma'), rmaNumber: `PE-KA-RMA-${yy}${mm}${dd}-${String(seqToday).padStart(4, '0')}`,
+        id: _id('rma'), rmaNumber: _ticketNumber('RMA'),
         serviceRequestId: serviceRequestId || '', customerId, productId, serialId: serialId || '', reason,
         status: 'Requested', resolutionType: '',
         inspection: { condition: '', findings: '', recommendedResolution: '' },
@@ -1098,10 +1118,8 @@ const db = {
 
     async request({ entityType, entityId, amount, description, requestedBy, meta }) {
       const today = new Date();
-      const yy = String(today.getFullYear()).slice(2), mm = String(today.getMonth() + 1).padStart(2, '0'), dd = String(today.getDate()).padStart(2, '0');
-      const seqToday = _mock.approvals.filter(a => a.approvalNumber.includes(`-${yy}${mm}${dd}-`)).length + 1;
       const rec = {
-        id: _id('apr'), approvalNumber: `PE-KA-APR-${yy}${mm}${dd}-${String(seqToday).padStart(4, '0')}`,
+        id: _id('apr'), approvalNumber: _ticketNumber('APR'),
         entityType, entityId, amount, description: description || '', requestedBy: requestedBy || 'System', meta: meta || {},
         status: 'Pending', decidedBy: '', decidedAt: '', comment: '',
         createdAt: today.toISOString().slice(0, 10)
