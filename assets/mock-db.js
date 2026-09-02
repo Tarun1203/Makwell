@@ -1023,9 +1023,14 @@ const db = {
       }
 
       let serviceRequestId = '';
-      if (reason === 'Service Request' && productId) {
+      if (reason === 'Service Request') {
+        // productId is optional here on purpose — plenty of real customers
+        // know their product category (Washing Machine) but not their exact
+        // model number, and shouldn't be denied a ticket just because the
+        // model dropdown was left blank. Downstream screens already handle
+        // a missing product gracefully (they show "—" instead of a name).
         const sr = await db.service.add({
-          customerId: customer.id, type: 'Service', productId,
+          customerId: customer.id, type: 'Service', productId: productId || '',
           district: district || customer.district || '',
           complaint: message || 'Submitted via website contact form.'
         });
