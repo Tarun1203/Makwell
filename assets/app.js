@@ -51,6 +51,18 @@ document.addEventListener('DOMContentLoaded', async () => {
   // resolves this immediately; live mode waits for Firestore to hydrate first).
   if (window.db) await db.ready;
 
+  // District dropdown (contact page), built from the single canonical list
+  // in mock-db.js — not hand-typed here, so it can never drift out of sync
+  // with whatever the CRM and Service Hub routing use.
+  const districtSelect = document.getElementById('ct_district');
+  if (districtSelect && window.KARNATAKA_DIVISIONS) {
+    const current = districtSelect.value;
+    districtSelect.innerHTML = '<option value="">Select…</option>' + KARNATAKA_DIVISIONS.map(div => `
+      <optgroup label="${div.name}">${div.districts.map(d => `<option>${d}</option>`).join('')}</optgroup>
+    `).join('');
+    if (current) districtSelect.value = current;
+  }
+
   // Product -> Model dependent dropdown (contact page), backed by the shared CRM catalog
   const productSelect = document.getElementById('ct_product');
   const modelSelect = document.getElementById('ct_model');
@@ -78,6 +90,31 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // Reason toggle (contact page: general / service / dealer)
+  // Serial number lookup (Book a Repair) — checks the public lookup index
+  // as they type, so they know before submitting whether it's recognized.
+  const serialInput = document.getElementById('ct_serial');
+  const serialStatus = document.getElementById('ct_serial_status');
+  if (serialInput && serialStatus && window.db) {
+    let lookupTimer;
+    serialInput.addEventListener('input', () => {
+      clearTimeout(lookupTimer);
+      const value = serialInput.value.trim();
+      if (!value) { serialStatus.textContent = ''; return; }
+      serialStatus.textContent = 'Checking…';
+      serialStatus.style.color = 'var(--text-mute)';
+      lookupTimer = setTimeout(async () => {
+        const result = await db.serials.publicLookup(value);
+        if (result.found) {
+          serialStatus.textContent = '✓ Found — this matches a product on file.';
+          serialStatus.style.color = 'var(--green)';
+        } else {
+          serialStatus.textContent = "Not found yet — that's fine, we'll verify it when we review your request.";
+          serialStatus.style.color = 'var(--text-mute)';
+        }
+      }, 500);
+    });
+  }
+
   const reasonBtns = document.querySelectorAll('.reason-btn');
   const reasonField = document.getElementById('ct_reason');
   const serviceFields = document.getElementById('serviceOnlyFields');
@@ -132,11 +169,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       const categoryId = document.getElementById('ct_product').value;
       const productId = document.getElementById('ct_model') ? document.getElementById('ct_model').value : '';
       const district = document.getElementById('ct_district') ? document.getElementById('ct_district').value : '';
+      const serialEl = document.getElementById('ct_serial');
+      const serialNumber = serialEl ? serialEl.value.trim() : '';
 
       const lead = await db.websiteLeads.add({
         name: document.getElementById('ct_name').value.trim(),
         phone: document.getElementById('ct_mobile').value.trim(),
-        reason, categoryId, productId, district,
+        reason, categoryId, productId, district, serialNumber,
         message: document.getElementById('ct_message').value.trim()
       });
 

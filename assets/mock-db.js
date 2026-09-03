@@ -250,12 +250,17 @@ const GST_RATE = 0.18; // 18% GST on repair services/parts
 const RMA_STATUS_STEPS = ['Requested', 'Approved', 'Product Received', 'Inspected', 'Resolved', 'Closed'];
 const RESOLUTION_TYPES = ['Replacement', 'Refund', 'Repair Escalation'];
 const SLA_AT_RISK_THRESHOLD = 0.7; // fraction of maxDays elapsed before flagging "At Risk"
-const KARNATAKA_DISTRICTS = [
-  'Bengaluru Urban', 'Bengaluru North', 'Bengaluru South', 'Chikkaballapur', 'Chitradurga', 'Davanagere', 'Kolar', 'Shivamogga', 'Tumakuru',
-  'Mysuru', 'Mandya', 'Hassan', 'Kodagu', 'Chamarajanagar', 'Chikkamagaluru', 'Dakshina Kannada', 'Udupi',
-  'Belagavi', 'Bagalkot', 'Vijayapura', 'Dharwad', 'Gadag', 'Haveri', 'Uttara Kannada',
-  'Kalaburagi', 'Bidar', 'Raichur', 'Koppal', 'Yadgir', 'Ballari', 'Vijayanagara'
+// The 31 districts, grouped by division — the single authored source. Any
+// UI wanting a flat list (KARNATAKA_DISTRICTS below) or a grouped one (the
+// website's district dropdown) derives from this, instead of the grouping
+// being hand-typed a second time somewhere and risking drifting out of sync.
+const KARNATAKA_DIVISIONS = [
+  { name: 'Bengaluru Division', districts: ['Bengaluru Urban', 'Bengaluru North', 'Bengaluru South', 'Chikkaballapur', 'Chitradurga', 'Davanagere', 'Kolar', 'Shivamogga', 'Tumakuru'] },
+  { name: 'Mysuru Division', districts: ['Mysuru', 'Mandya', 'Hassan', 'Kodagu', 'Chamarajanagar', 'Chikkamagaluru', 'Dakshina Kannada', 'Udupi'] },
+  { name: 'Belagavi Division', districts: ['Belagavi', 'Bagalkot', 'Vijayapura', 'Dharwad', 'Gadag', 'Haveri', 'Uttara Kannada'] },
+  { name: 'Kalaburagi Division', districts: ['Kalaburagi', 'Bidar', 'Raichur', 'Koppal', 'Yadgir', 'Ballari', 'Vijayanagara'] }
 ];
+const KARNATAKA_DISTRICTS = KARNATAKA_DIVISIONS.flatMap(d => d.districts);
 
 // 3-letter code per district, for embedding in service ticket numbers.
 // Verified unique across all 31 — see the district-code audit this was
@@ -491,14 +496,41 @@ const db = {
       const rec = { id: _id('s'), status: 'In Stock', dealer: '', createdAt: new Date().toISOString().slice(0, 10), ...serial };
       _mock.serials.push(rec);
       await _persistSet('serials', rec.id, rec);
+      await db.serials._syncIndex(rec);
       return _delay(rec);
     },
     async setStatus(id, status) {
       const s = _mock.serials.find(x => x.id === id);
-      if (s) { s.status = status; await _persistSet('serials', s.id, s); }
+      if (s) { s.status = status; await _persistSet('serials', s.id, s); await db.serials._syncIndex(s); }
       return _delay(s);
     },
-    async findBySerial(value) { return _delay(_mock.serials.find(s => s.serial.toLowerCase() === value.toLowerCase()) || null); }
+    async findBySerial(value) { return _delay(_mock.serials.find(s => s.serial.toLowerCase() === value.toLowerCase()) || null); },
+
+    // Keeps the narrow public-lookup index (see publicLookup below) in sync
+    // whenever a serial is created or its status changes. Not exposed
+    // directly — called internally by add()/setStatus() above.
+    async _syncIndex(rec) {
+      if (!rec.serial) return;
+      await _persistSet('serialIndex', rec.serial.toUpperCase().trim(), { serialId: rec.id, productId: rec.productId, status: rec.status });
+    },
+
+    // Safe for anonymous use, unlike everything else on this object — a
+    // single targeted document read against /serialIndex (keyed by the
+    // serial string itself), not a scan of the whole /serials collection.
+    // The public website's Book a Repair form uses this so a visitor can
+    // check "is this serial on file" without needing sign-in, and without
+    // that requiring the entire serial database to be publicly listable.
+    async publicLookup(value) {
+      if (!value || !value.trim()) return { found: false };
+      const ref = doc(fsDb, 'serialIndex', value.toUpperCase().trim());
+      try {
+        const snap = await getDoc(ref);
+        return snap.exists() ? { found: true, ...snap.data() } : { found: false };
+      } catch (err) {
+        console.error('[Firestore] serial lookup failed', err);
+        return { found: false };
+      }
+    }
   },
 
   // ---- Warranty rules ----------------------------------------------------
@@ -1049,7 +1081,7 @@ const db = {
   // submissions additionally create a real Service Hub record (see add()).
   websiteLeads: {
     async list() { return _delay([..._mock.websiteLeads].sort((a, b) => b.createdAt.localeCompare(a.createdAt))); },
-    async add({ name, phone, reason, categoryId, productId, district, message }) {
+    async add({ name, phone, reason, categoryId, productId, district, message, serialNumber }) {
       // Dedup by phone, same rule the CRM's own Add Customer flow uses.
       let customer = _mock.customers.find(c => c.phone === phone);
       if (!customer) {
@@ -1060,23 +1092,43 @@ const db = {
 
       let serviceRequestId = '';
       if (reason === 'Service Request') {
+        // If they entered a serial, check it against the public lookup
+        // index — a match links the real, verified serial record. No
+        // match doesn't block the ticket; it just gets logged as
+        // "customer-entered, unverified" for staff to check by hand,
+        // rather than trusting an anonymous submission to create or
+        // claim a serial record on its own (that'd let anyone claim any
+        // serial number as theirs).
+        let matchedSerialId = '';
+        let serialNote = '';
+        if (serialNumber && serialNumber.trim()) {
+          const lookup = await db.serials.publicLookup(serialNumber);
+          if (lookup.found) {
+            matchedSerialId = lookup.serialId;
+            serialNote = `Serial ${serialNumber.trim().toUpperCase()} — matched to an existing record.`;
+          } else {
+            serialNote = `Serial entered by customer (not found in our records — please verify): ${serialNumber.trim().toUpperCase()}`;
+          }
+        }
+
         // productId is optional here on purpose — plenty of real customers
         // know their product category (Washing Machine) but not their exact
         // model number, and shouldn't be denied a ticket just because the
         // model dropdown was left blank. Downstream screens already handle
         // a missing product gracefully (they show "—" instead of a name).
         const sr = await db.service.add({
-          customerId: customer.id, type: 'Service', productId: productId || '',
+          customerId: customer.id, type: 'Service', productId: productId || '', serialId: matchedSerialId,
           district: district || customer.district || '', source: 'Website',
           complaint: message || 'Submitted via website contact form.'
         });
+        if (serialNote) await db.service.addNote(sr.id, serialNote, 'Website');
         serviceRequestId = sr.id;
       }
 
       const rec = {
         id: _id('lead'), leadNumber: _ticketNumber(reason === 'Dealer / Partner Enquiry' ? 'DLR' : 'ENQ'),
         name, phone, reason, categoryId: categoryId || '', productId: productId || '',
-        district: district || '', message: message || '',
+        district: district || '', message: message || '', serialNumber: serialNumber || '',
         customerId: customer.id, serviceRequestId,
         createdAt: new Date().toISOString().slice(0, 10)
       };
@@ -1224,3 +1276,4 @@ window.SERVICE_STATUS_STEPS = SERVICE_STATUS_STEPS;
 window.RMA_STATUS_STEPS = RMA_STATUS_STEPS;
 window.RESOLUTION_TYPES = RESOLUTION_TYPES;
 window.KARNATAKA_DISTRICTS = KARNATAKA_DISTRICTS;
+window.KARNATAKA_DIVISIONS = KARNATAKA_DIVISIONS;

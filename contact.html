@@ -97,11 +97,7 @@
           <div class="field" data-field="ct_product">
             <label for="ct_product">Product</label>
             <select id="ct_product" name="ct_product">
-              <option value="">Select…</option>
-              <option>Television</option>
-              <option>Washing Machine</option>
-              <option>Stabilizer</option>
-              <option>Not sure yet</option>
+              <option value="">Loading…</option>
             </select>
           </div>
 
@@ -117,47 +113,13 @@
                 <label for="ct_district">District</label>
                 <select id="ct_district" name="ct_district">
                   <option value="">Select…</option>
-                  <optgroup label="Bengaluru Division">
-                    <option>Bengaluru Urban</option>
-                    <option>Bengaluru North</option>
-                    <option>Bengaluru South</option>
-                    <option>Chikkaballapur</option>
-                    <option>Chitradurga</option>
-                    <option>Davanagere</option>
-                    <option>Kolar</option>
-                    <option>Shivamogga</option>
-                    <option>Tumakuru</option>
-                  </optgroup>
-                  <optgroup label="Mysuru Division">
-                    <option>Mysuru</option>
-                    <option>Mandya</option>
-                    <option>Hassan</option>
-                    <option>Kodagu</option>
-                    <option>Chamarajanagar</option>
-                    <option>Chikkamagaluru</option>
-                    <option>Dakshina Kannada</option>
-                    <option>Udupi</option>
-                  </optgroup>
-                  <optgroup label="Belagavi Division">
-                    <option>Belagavi</option>
-                    <option>Bagalkot</option>
-                    <option>Vijayapura</option>
-                    <option>Dharwad</option>
-                    <option>Gadag</option>
-                    <option>Haveri</option>
-                    <option>Uttara Kannada</option>
-                  </optgroup>
-                  <optgroup label="Kalaburagi Division">
-                    <option>Kalaburagi</option>
-                    <option>Bidar</option>
-                    <option>Raichur</option>
-                    <option>Koppal</option>
-                    <option>Yadgir</option>
-                    <option>Ballari</option>
-                    <option>Vijayanagara</option>
-                  </optgroup>
                 </select>
               </div>
+            </div>
+            <div class="field" data-field="ct_serial">
+              <label for="ct_serial">Serial Number <span class="hint" style="font-weight:400;">(optional, but helps us confirm warranty faster)</span></label>
+              <input type="text" id="ct_serial" name="ct_serial" placeholder="Printed on the product's rating label" autocomplete="off">
+              <div id="ct_serial_status" style="font-size:12.5px; margin-top:4px;"></div>
             </div>
           </div>
 
